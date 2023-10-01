@@ -1,6 +1,7 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import * as echarts from "echarts";
-import { shallowRef, watch, onMounted } from "vue";
+import { shallowRef, onMounted } from "vue";
 import "echarts/extension/bmap/bmap";
 import data from "./data";
 
