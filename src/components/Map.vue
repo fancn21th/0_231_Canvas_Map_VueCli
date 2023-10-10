@@ -4,15 +4,16 @@ import * as echarts from "echarts";
 import { shallowRef, onMounted, onBeforeMount } from "vue";
 import json from "./assets";
 import { calcBoundingCoords } from "./calc";
+import merge from "lodash/mergeWith";
 
 // const designWidth = 800;
 // const designHeight = 800;
-const designWidthPx = `1400px`;
-const designHeightPx = `1200px`;
+// const designWidthPx = `1400px`;
+// const designHeightPx = `1200px`;
 
 onBeforeMount(() => {
-  document.documentElement.style.setProperty("--design-width", designWidthPx);
-  document.documentElement.style.setProperty("--design-height", designHeightPx);
+  // document.documentElement.style.setProperty("--design-width", designWidthPx);
+  // document.documentElement.style.setProperty("--design-height", designHeightPx);
 });
 
 echarts.registerMap("china", json.china);
@@ -29,14 +30,16 @@ const chinaBoundingCoordsMap = json.china.features.reduce((acc, feature) => {
   };
 }, {});
 
-// const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
-//   return {
-//     ...acc,
-//     [feature.properties.name]: {
-//       boundingCoords: calcBoundingCoords(feature),
-//     },
-//   };
-// }, {});
+const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
+  return {
+    ...acc,
+    [feature.properties.name]: {
+      boundingCoords: calcBoundingCoords(feature),
+    },
+  };
+}, {});
+
+const coordsMap = merge(chinaBoundingCoordsMap, hubeiBoundingCoordsMap);
 
 const chartRef = shallowRef(null);
 
@@ -62,7 +65,7 @@ const renderChart = async () => {
             show: true,
           },
         },
-        boundingCoords: chinaBoundingCoordsMap["湖北省"].boundingCoords,
+        boundingCoords: coordsMap["武汉市"].boundingCoords,
       },
       {
         id: "L2",
@@ -73,6 +76,7 @@ const renderChart = async () => {
             show: true,
           },
         },
+        boundingCoords: coordsMap["武汉市"].boundingCoords,
       },
       {
         id: "L3",
@@ -83,7 +87,7 @@ const renderChart = async () => {
             show: true,
           },
         },
-        boundingCoords: chinaBoundingCoordsMap["湖北省"].boundingCoords,
+        boundingCoords: coordsMap["武汉市"].boundingCoords,
       },
     ],
   };
@@ -124,8 +128,10 @@ onMounted(() => {
 
 <style scoped>
 .chart-container {
-  width: var(--design-width);
-  height: var(--design-height);
+  width: 100%;
+  height: 100%;
+  /* width: var(--design-width);
+  height: var(--design-height); */
   border: 1px solid #ccc;
 }
 </style>
