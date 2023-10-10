@@ -7,19 +7,20 @@ import { calcBoundingCoords } from "./calc";
 
 // const designWidth = 800;
 // const designHeight = 800;
-const designWidthPx = `800px`;
-const designHeightPx = `800px`;
+const designWidthPx = `1400px`;
+const designHeightPx = `1200px`;
 
 onBeforeMount(() => {
   document.documentElement.style.setProperty("--design-width", designWidthPx);
   document.documentElement.style.setProperty("--design-height", designHeightPx);
 });
 
+echarts.registerMap("china", json.china);
 echarts.registerMap("hubei", json.hubei);
 echarts.registerMap("wuhan", json.wuhan);
 
 // 辅助数据
-const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
+const chinaBoundingCoordsMap = json.china.features.reduce((acc, feature) => {
   return {
     ...acc,
     [feature.properties.name]: {
@@ -27,6 +28,15 @@ const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
     },
   };
 }, {});
+
+// const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
+//   return {
+//     ...acc,
+//     [feature.properties.name]: {
+//       boundingCoords: calcBoundingCoords(feature),
+//     },
+//   };
+// }, {});
 
 const chartRef = shallowRef(null);
 
@@ -46,23 +56,34 @@ const renderChart = async () => {
       {
         id: "L1",
         zlevel: 1,
+        map: "china",
+        label: {
+          normal: {
+            show: true,
+          },
+        },
+        boundingCoords: chinaBoundingCoordsMap["湖北省"].boundingCoords,
+      },
+      {
+        id: "L2",
+        zlevel: 2,
         map: "hubei",
         label: {
           normal: {
             show: true,
           },
         },
-        boundingCoords: hubeiBoundingCoordsMap["武汉市"].boundingCoords,
       },
       {
-        id: "L2",
-        zlevel: 2,
+        id: "L3",
+        zlevel: 3,
         map: "wuhan",
         label: {
           normal: {
             show: true,
           },
         },
+        boundingCoords: chinaBoundingCoordsMap["湖北省"].boundingCoords,
       },
     ],
   };
@@ -76,6 +97,14 @@ const renderChart = async () => {
   // 点击事件
   chart.on("click", function (params) {
     console.log("click", params);
+
+    chart.setOption({
+      geo: chart.getOption().geo.map((item) => ({
+        ...item,
+        zoom: 2,
+      })),
+    });
+
     debug("点击事件");
   });
 
