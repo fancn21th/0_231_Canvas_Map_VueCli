@@ -5,6 +5,8 @@ import { shallowRef, onMounted, onBeforeMount } from "vue";
 import json from "./assets";
 import { calcBoundingCoords } from "./calc";
 import merge from "lodash/mergeWith";
+import bgImg from "./assets/bg.png";
+// import bgImg2 from "./assets/bg2.png";
 
 // const designWidth = 800;
 // const designHeight = 800;
@@ -59,6 +61,7 @@ const renderChart = async () => {
       {
         id: "L1",
         zlevel: 1,
+        roam: true,
         map: "china",
         label: {
           normal: {
@@ -66,10 +69,18 @@ const renderChart = async () => {
           },
         },
         boundingCoords: coordsMap["武汉市"].boundingCoords,
+        itemStyle: {
+          areaColor: {
+            image: bgImg,
+            repeat: "repeat",
+          },
+          opacity: 0.5,
+        },
       },
       {
         id: "L2",
         zlevel: 2,
+        roam: true,
         map: "hubei",
         label: {
           normal: {
@@ -77,10 +88,18 @@ const renderChart = async () => {
           },
         },
         boundingCoords: coordsMap["武汉市"].boundingCoords,
+        itemStyle: {
+          areaColor: {
+            image: bgImg,
+            repeat: "repeat",
+          },
+          opacity: 0.5,
+        },
       },
       {
         id: "L3",
         zlevel: 3,
+        roam: true,
         map: "wuhan",
         label: {
           normal: {
@@ -88,6 +107,18 @@ const renderChart = async () => {
           },
         },
         boundingCoords: coordsMap["武汉市"].boundingCoords,
+        itemStyle: {
+          borderWidth: 3,
+          borderColor: "#fff",
+          shadowColor: "rgba(0, 0, 0, 0.5)",
+          shadowBlur: 10,
+          shadowOffsetX: 5,
+          shadowOffsetY: 5,
+          areaColor: {
+            image: bgImg,
+            repeat: "no-repeat",
+          },
+        },
       },
     ],
   };
@@ -132,7 +163,6 @@ onMounted(() => {
   height: 100%;
   /* width: var(--design-width);
   height: var(--design-height); */
-  border: 1px solid #ccc;
 }
 </style>
 ./hubei
