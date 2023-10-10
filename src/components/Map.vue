@@ -1,14 +1,25 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import * as echarts from "echarts";
-import { shallowRef, onMounted } from "vue";
-import hubeiJson from "./hubei.json";
+import { shallowRef, onMounted, onBeforeMount } from "vue";
+import json from "./assets";
 import { calcBoundingCoords } from "./calc";
 
-let geoData = hubeiJson;
+// const designWidth = 800;
+// const designHeight = 800;
+const designWidthPx = `800px`;
+const designHeightPx = `800px`;
+
+onBeforeMount(() => {
+  document.documentElement.style.setProperty("--design-width", designWidthPx);
+  document.documentElement.style.setProperty("--design-height", designHeightPx);
+});
+
+echarts.registerMap("hubei", json.hubei);
+echarts.registerMap("wuhan", json.wuhan);
 
 // 辅助数据
-const boundingCoordsMap = geoData.features.reduce((acc, feature) => {
+const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
   return {
     ...acc,
     [feature.properties.name]: {
@@ -30,23 +41,27 @@ const debug = (stage) => {
 const renderChart = async () => {
   chart = echarts.init(chartRef.value);
 
-  echarts.registerMap("hubei", hubeiJson);
-
   const option = {
-    series: [
+    geo: [
       {
-        name: "hubei",
-        type: "map",
-        roam: true,
+        id: "L1",
+        zlevel: 1,
         map: "hubei",
-        emphasis: {
-          label: {
+        label: {
+          normal: {
             show: true,
           },
         },
-        scaleLimit: {
-          min: 1,
-          max: 10,
+        boundingCoords: hubeiBoundingCoordsMap["武汉市"].boundingCoords,
+      },
+      {
+        id: "L2",
+        zlevel: 2,
+        map: "wuhan",
+        label: {
+          normal: {
+            show: true,
+          },
         },
       },
     ],
@@ -55,43 +70,12 @@ const renderChart = async () => {
   // 移动事件
   chart.on("georoam", function (params) {
     console.log("georoam", params);
-    console.log(
-      "左上角经纬度",
-      chart.convertFromPixel({ seriesName: "hubei" }, [0, 0])
-    );
-
-    console.log(
-      "右下角经纬度",
-      chart.convertFromPixel({ seriesName: "hubei" }, [600, 600])
-    );
+    debug("拖动事件");
   });
 
   // 点击事件
   chart.on("click", function (params) {
     console.log("click", params);
-
-    // chart.setOption({
-    //   ...chart.getOption(),
-    //   series: [
-    //     {
-    //       ...chart.getOption().series[0],
-    //       zoom: 2,
-    //     },
-    //   ],
-    // });
-
-    const cords = boundingCoordsMap[params.name].boundingCoords;
-
-    chart.setOption({
-      ...chart.getOption(),
-      boundingCoords: [
-        // 定位左上角经纬度
-        cords[0],
-        // 定位右下角经纬度
-        cords[1],
-      ],
-    });
-
     debug("点击事件");
   });
 
@@ -111,8 +95,8 @@ onMounted(() => {
 
 <style scoped>
 .chart-container {
-  width: 600px;
-  height: 600px;
+  width: var(--design-width);
+  height: var(--design-height);
   border: 1px solid #ccc;
 }
 </style>
