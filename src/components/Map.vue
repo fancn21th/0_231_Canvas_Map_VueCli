@@ -2,15 +2,20 @@
 <script setup>
 import * as echarts from "echarts";
 import { shallowRef, onMounted } from "vue";
+// import gsap from "gsap";
 import "echarts/extension/bmap/bmap";
 import data from "./hubei";
 
 // https://echarts.apache.org/zh/faq.html#others
 const chartRef = shallowRef(null);
 
+let chart = null;
+
 const renderChart = async () => {
-  const chart = echarts.init(chartRef.value);
+  chart = echarts.init(chartRef.value);
+
   echarts.registerMap("Hubei", data);
+
   const option = {
     series: [
       {
@@ -23,10 +28,34 @@ const renderChart = async () => {
             show: true,
           },
         },
+        scaleLimit: {
+          min: 1,
+          max: 10,
+        },
       },
     ],
   };
+
+  // chart.on("geoselectchanged", function (params) {
+  //   console.log("geoselectchanged", params);
+  // });
+
+  chart.on("click", function (params) {
+    console.log("click", params);
+    chart.setOption({
+      ...chart.getOption(),
+      series: [
+        {
+          ...chart.getOption().series[0],
+          zoom: 2,
+        },
+      ],
+    });
+  });
+
   chart.setOption(option);
+
+  console.log("chart", chart.getOption());
 };
 
 onMounted(() => {
