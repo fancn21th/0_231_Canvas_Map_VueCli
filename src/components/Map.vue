@@ -2,27 +2,43 @@
 <script setup>
 import * as echarts from "echarts";
 import { shallowRef, onMounted } from "vue";
-// import gsap from "gsap";
-import "echarts/extension/bmap/bmap";
-import data from "./hubei";
+import hubeiJson from "./hubei.json";
+import { calcBoundingCoords } from "./calc";
 
-// https://echarts.apache.org/zh/faq.html#others
+let geoData = hubeiJson;
+
+// 辅助数据
+const boundingCoordsMap = geoData.features.reduce((acc, feature) => {
+  return {
+    ...acc,
+    [feature.properties.name]: {
+      boundingCoords: calcBoundingCoords(feature),
+    },
+  };
+}, {});
+
 const chartRef = shallowRef(null);
 
+// echarts 实例
 let chart = null;
 
+const debug = (stage) => {
+  console.log(stage, "chart.getOption()", chart.getOption());
+};
+
+// 渲染图表
 const renderChart = async () => {
   chart = echarts.init(chartRef.value);
 
-  echarts.registerMap("Hubei", data);
+  echarts.registerMap("hubei", hubeiJson);
 
   const option = {
     series: [
       {
-        name: "Hubei Province",
+        name: "hubei",
         type: "map",
         roam: true,
-        map: "Hubei",
+        map: "hubei",
         emphasis: {
           label: {
             show: true,
@@ -36,26 +52,52 @@ const renderChart = async () => {
     ],
   };
 
-  // chart.on("geoselectchanged", function (params) {
-  //   console.log("geoselectchanged", params);
-  // });
+  // 移动事件
+  chart.on("georoam", function (params) {
+    console.log("georoam", params);
+    console.log(
+      "左上角经纬度",
+      chart.convertFromPixel({ seriesName: "hubei" }, [0, 0])
+    );
 
+    console.log(
+      "右下角经纬度",
+      chart.convertFromPixel({ seriesName: "hubei" }, [600, 600])
+    );
+  });
+
+  // 点击事件
   chart.on("click", function (params) {
     console.log("click", params);
+
+    // chart.setOption({
+    //   ...chart.getOption(),
+    //   series: [
+    //     {
+    //       ...chart.getOption().series[0],
+    //       zoom: 2,
+    //     },
+    //   ],
+    // });
+
+    const cords = boundingCoordsMap[params.name].boundingCoords;
+
     chart.setOption({
       ...chart.getOption(),
-      series: [
-        {
-          ...chart.getOption().series[0],
-          zoom: 2,
-        },
+      boundingCoords: [
+        // 定位左上角经纬度
+        cords[0],
+        // 定位右下角经纬度
+        cords[1],
       ],
     });
+
+    debug("点击事件");
   });
 
   chart.setOption(option);
 
-  console.log("chart", chart.getOption());
+  debug("初始化完成");
 };
 
 onMounted(() => {
@@ -69,8 +111,9 @@ onMounted(() => {
 
 <style scoped>
 .chart-container {
-  width: 100%;
-  height: 100%;
+  width: 600px;
+  height: 600px;
+  border: 1px solid #ccc;
 }
 </style>
 ./hubei
