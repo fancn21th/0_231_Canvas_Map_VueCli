@@ -2,11 +2,10 @@
 <script setup>
 import * as echarts from "echarts";
 import { shallowRef, onMounted, onBeforeMount } from "vue";
-import json from "./assets";
-import { calcBoundingCoords } from "./calc";
+import json from "./assets/geoJson";
+import { calcBoundingCoords } from "./utils/calc";
 import merge from "lodash/mergeWith";
 import bgImg from "./assets/bg.png";
-// import bgImg2 from "./assets/bg2.png";
 
 // const designWidth = 800;
 // const designHeight = 800;
@@ -41,6 +40,7 @@ const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
   };
 }, {});
 
+// 坐标的字典
 const coordsMap = merge(chinaBoundingCoordsMap, hubeiBoundingCoordsMap);
 
 const chartRef = shallowRef(null);
@@ -57,6 +57,9 @@ const renderChart = async () => {
   chart = echarts.init(chartRef.value);
 
   const option = {
+    grid: {
+      show: true,
+    },
     geo: [
       {
         id: "L1",
@@ -68,13 +71,9 @@ const renderChart = async () => {
             show: true,
           },
         },
-        boundingCoords: coordsMap["武汉市"].boundingCoords,
+        boundingCoords: coordsMap["湖北省"].boundingCoords,
         itemStyle: {
-          areaColor: {
-            image: bgImg,
-            repeat: "repeat",
-          },
-          opacity: 0.5,
+          color: "rgba(0, 0, 0, 0.1)",
         },
       },
       {
@@ -87,18 +86,25 @@ const renderChart = async () => {
             show: true,
           },
         },
-        boundingCoords: coordsMap["武汉市"].boundingCoords,
+        boundingCoords: coordsMap["湖北省"].boundingCoords,
         itemStyle: {
-          areaColor: {
+          color: {
             image: bgImg,
-            repeat: "repeat",
+            repeat: "no-repeat",
           },
+          borderWidth: 3,
+          borderColor: "#fff",
           opacity: 0.5,
+          shadowColor: "rgba(0, 0, 0, 0.5)",
+          shadowBlur: 10,
+          shadowOffsetX: 15,
+          shadowOffsetY: 15,
         },
       },
       {
         id: "L3",
         zlevel: 3,
+        show: false,
         roam: true,
         map: "wuhan",
         label: {
@@ -106,7 +112,7 @@ const renderChart = async () => {
             show: true,
           },
         },
-        boundingCoords: coordsMap["武汉市"].boundingCoords,
+        boundingCoords: coordsMap["湖北省"].boundingCoords,
         itemStyle: {
           borderWidth: 3,
           borderColor: "#fff",
@@ -114,7 +120,7 @@ const renderChart = async () => {
           shadowBlur: 10,
           shadowOffsetX: 5,
           shadowOffsetY: 5,
-          areaColor: {
+          color: {
             image: bgImg,
             repeat: "no-repeat",
           },
@@ -165,4 +171,4 @@ onMounted(() => {
   height: var(--design-height); */
 }
 </style>
-./hubei
+./hubei ./assets/geoJson
