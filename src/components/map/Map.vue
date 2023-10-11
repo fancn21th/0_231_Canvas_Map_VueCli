@@ -1,11 +1,11 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import * as echarts from "echarts";
-import { shallowRef, onMounted, onBeforeMount } from "vue";
+import { shallowRef, onMounted, onBeforeMount, watch } from "vue";
 import json from "./assets/geoJson";
-import { calcBoundingCoords } from "./utils/calc";
+import { calcBoundingCoords } from "./utils";
 import merge from "lodash/mergeWith";
-import bgImg from "./assets/bg.png";
+import { useOption } from "./hooks/useOption";
 
 // const designWidth = 800;
 // const designHeight = 800;
@@ -43,91 +43,36 @@ const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
 // 坐标的字典
 const coordsMap = merge(chinaBoundingCoordsMap, hubeiBoundingCoordsMap);
 
+const { option, updateOption } = useOption({
+  defaultOptions: {},
+  coordsMap,
+});
+
+watch(
+  option,
+  () => {
+    if (option?.value) {
+      chart.setOption(option.value);
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+);
+
 const chartRef = shallowRef(null);
 
 // echarts 实例
 let chart = null;
 
+// debugger
 const debug = (stage) => {
   console.log(stage, "chart.getOption()", chart.getOption());
 };
 
-// 渲染图表
-const renderChart = async () => {
+onMounted(() => {
   chart = echarts.init(chartRef.value);
-
-  const option = {
-    grid: {
-      show: true,
-    },
-    geo: [
-      {
-        id: "L1",
-        zlevel: 1,
-        roam: true,
-        map: "china",
-        label: {
-          normal: {
-            show: true,
-          },
-        },
-        boundingCoords: coordsMap["湖北省"].boundingCoords,
-        itemStyle: {
-          color: "rgba(0, 0, 0, 0.1)",
-        },
-      },
-      {
-        id: "L2",
-        zlevel: 2,
-        roam: true,
-        map: "hubei",
-        label: {
-          normal: {
-            show: true,
-          },
-        },
-        boundingCoords: coordsMap["湖北省"].boundingCoords,
-        itemStyle: {
-          color: {
-            image: bgImg,
-            repeat: "no-repeat",
-          },
-          borderWidth: 3,
-          borderColor: "#fff",
-          opacity: 0.5,
-          shadowColor: "rgba(0, 0, 0, 0.5)",
-          shadowBlur: 10,
-          shadowOffsetX: 15,
-          shadowOffsetY: 15,
-        },
-      },
-      {
-        id: "L3",
-        zlevel: 3,
-        show: false,
-        roam: true,
-        map: "wuhan",
-        label: {
-          normal: {
-            show: true,
-          },
-        },
-        boundingCoords: coordsMap["湖北省"].boundingCoords,
-        itemStyle: {
-          borderWidth: 3,
-          borderColor: "#fff",
-          shadowColor: "rgba(0, 0, 0, 0.5)",
-          shadowBlur: 10,
-          shadowOffsetX: 5,
-          shadowOffsetY: 5,
-          color: {
-            image: bgImg,
-            repeat: "no-repeat",
-          },
-        },
-      },
-    ],
-  };
 
   // 移动事件
   chart.on("georoam", function (params) {
@@ -145,17 +90,12 @@ const renderChart = async () => {
         zoom: 2,
       })),
     });
-
     debug("点击事件");
   });
 
-  chart.setOption(option);
-
-  debug("初始化完成");
-};
-
-onMounted(() => {
-  renderChart();
+  setTimeout(() => {
+    updateOption();
+  }, 0);
 });
 </script>
 
