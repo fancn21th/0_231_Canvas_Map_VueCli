@@ -11,7 +11,10 @@
 // 3. 部分业务模块 需要在每一级地图 有 柱状图 / 或者 圆点
 // 4. 当全局的过滤条件 (年份) 发生变化, 地图内的 图表数据也发生变化
 // 5. 动画
-import bgImg from "../assets/bg.png";
+
+import l1 from "./geo/l1";
+import l2 from "./geo/l2";
+import l3 from "./geo/l3";
 
 const stepsToRun = ["L0.1", "L1.1"];
 
@@ -22,118 +25,22 @@ export const stepsMap = {
   "L1.3": "绘制边框",
 };
 
+const donone = (preOption, action) => {
+  const nextOption = preOption;
+  return nextOption;
+};
+
 const stepFuncsForGeo = {
-  "L0.1": (preOption, action) => {
-    const nextOption = preOption;
-    return nextOption;
-  },
-  "L1.1": (preOption, action) => {
-    const nextOption = preOption;
-    return nextOption;
-  },
-  "L1.2": (preOption, action) => {
-    const nextOption = preOption;
-    return nextOption;
-  },
-  "L1.3": (preOption, action) => {
-    const nextOption = preOption;
-    return nextOption;
-  },
+  "L0.1": donone,
+  "L1.1": donone,
+  "L1.2": donone,
+  "L1.3": donone,
 };
 
 const specificStepFuncsForGeo = {
-  l1: {
-    "L0.1": (preOption, { coordsMap }) => {
-      return {
-        id: "L1",
-        zlevel: 1,
-        roam: true,
-        map: "china",
-        label: {
-          normal: {
-            show: true,
-          },
-        },
-        boundingCoords: coordsMap["湖北省"].boundingCoords,
-      };
-    },
-    "L1.1": (preOption, action) => {
-      return {
-        ...preOption,
-        itemStyle: {
-          color: "rgba(0, 0, 0, 0.1)",
-        },
-      };
-    },
-  },
-  l2: {
-    "L0.1": (preOption, { coordsMap }) => {
-      return {
-        id: "L2",
-        zlevel: 2,
-        roam: true,
-        map: "hubei",
-        label: {
-          normal: {
-            show: true,
-          },
-        },
-        boundingCoords: coordsMap["湖北省"].boundingCoords,
-      };
-    },
-    "L1.1": (preOption, action) => {
-      return {
-        ...preOption,
-        itemStyle: {
-          color: {
-            image: bgImg,
-            repeat: "no-repeat",
-          },
-          borderWidth: 3,
-          borderColor: "#fff",
-          opacity: 0.5,
-          shadowColor: "rgba(0, 0, 0, 0.5)",
-          shadowBlur: 10,
-          shadowOffsetX: 15,
-          shadowOffsetY: 15,
-        },
-      };
-    },
-  },
-  l3: {
-    "L0.1": (preOption, { coordsMap }) => {
-      return {
-        id: "L3",
-        zlevel: 3,
-        roam: true,
-        map: "wuhan",
-        label: {
-          normal: {
-            show: true,
-          },
-        },
-        boundingCoords: coordsMap["湖北省"].boundingCoords,
-      };
-    },
-    "L1.1": (preOption, action) => {
-      return {
-        ...preOption,
-        itemStyle: {
-          color: {
-            image: bgImg,
-            repeat: "no-repeat",
-          },
-          borderWidth: 3,
-          borderColor: "#fff",
-          opacity: 0.5,
-          shadowColor: "rgba(0, 0, 0, 0.5)",
-          shadowBlur: 10,
-          shadowOffsetX: 15,
-          shadowOffsetY: 15,
-        },
-      };
-    },
-  },
+  l1,
+  l2,
+  l3,
 };
 
 const stepFuncsForGeoL1 = {
