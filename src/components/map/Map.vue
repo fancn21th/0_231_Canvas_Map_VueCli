@@ -43,8 +43,7 @@ const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
 // 坐标的字典
 const coordsMap = merge(chinaBoundingCoordsMap, hubeiBoundingCoordsMap);
 
-const { option, updateOption } = useOption({
-  defaultOptions: {},
+const { option, updateOption, goUp, goDown } = useOption({
   coordsMap,
 });
 
@@ -84,6 +83,9 @@ onMounted(() => {
   chart.on("click", function (params) {
     console.log("click", params);
 
+    goDown();
+    goUp();
+
     chart.setOption({
       geo: chart.getOption().geo.map((item) => ({
         ...item,
@@ -94,7 +96,9 @@ onMounted(() => {
   });
 
   setTimeout(() => {
-    updateOption();
+    updateOption({
+      level: 2,
+    });
   }, 0);
 });
 </script>
