@@ -41,10 +41,7 @@ export default {
               opacity: 0.5,
             }
           : {
-              // 需要设置才能取消
-              borderWidth: 1,
-              borderColor: "#fff",
-              opacity: 0.3,
+              color: "rgba(0, 0, 0, 0.1)",
             }),
       },
     };
