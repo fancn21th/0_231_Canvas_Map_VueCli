@@ -16,10 +16,11 @@ import l1 from "./geo/l1";
 import l2 from "./geo/l2";
 import l3 from "./geo/l3";
 
-const stepsToRun = ["L0.1", "L1.1"];
+const stepsToRun = ["L0.1", "L0.2", "L1.1"];
 
 export const stepsMap = {
   "L0.1": "基础配置",
+  "L0.2": "地图层级",
   "L1.1": "绘制背景",
   "L1.2": "绘制阴影",
   "L1.3": "绘制边框",
@@ -33,6 +34,7 @@ const donone = (preOption, action) => {
 
 const stepFuncsForGeo = {
   "L0.1": donone,
+  "L0.2": donone,
   "L1.1": donone,
   "L1.2": donone,
   "L1.3": donone,
@@ -68,7 +70,10 @@ const runSteps = (stepFuncs, action) => {
     debugge(stepsMap[stepFuncName], "执行前", { action, preOption });
 
     const stepFunc = stepFuncs[stepFuncName];
-    const nextOption = stepFunc(preOption, action);
+    const nextOption = {
+      ...preOption,
+      ...stepFunc(preOption, action),
+    };
 
     debugge(stepsMap[stepFuncName], "执行后", {
       action,

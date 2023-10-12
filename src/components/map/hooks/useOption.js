@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { resolveNextOption } from "../steps";
 
-export const useOption = ({ coordsMap = {} }) => {
+export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
   const option = ref(null);
 
   return {
@@ -10,6 +10,7 @@ export const useOption = ({ coordsMap = {} }) => {
       const nextOption = resolveNextOption({
         ...action,
         coordsMap,
+        nameMap,
       });
       option.value = nextOption;
     },

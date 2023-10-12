@@ -2,24 +2,29 @@
 
 import bgImg from "../../assets/bg.png";
 
+// 第三层的地图
 export default {
-  "L0.1": (preOption, { coordsMap }) => {
+  "L0.1": (preOption, { coordsMap, nameMap, name }) => {
     return {
       id: "L3",
       zlevel: 3,
       roam: true,
-      map: "wuhan",
       label: {
         normal: {
           show: true,
         },
       },
-      boundingCoords: coordsMap["湖北省"].boundingCoords,
+    };
+  },
+  "L0.2": (preOption, { coordsMap, name, level, nameMap }) => {
+    const map = level === 3 ? nameMap[name] : "wuhan";
+    return {
+      map,
+      boundingCoords: coordsMap[name].boundingCoords,
     };
   },
   "L1.1": (preOption, action) => {
     return {
-      ...preOption,
       itemStyle: {
         color: {
           image: bgImg,

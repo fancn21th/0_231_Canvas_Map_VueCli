@@ -1,50 +1,15 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import * as echarts from "echarts";
-import { shallowRef, onMounted, onBeforeMount, watch } from "vue";
-import json from "./assets/geoJson";
-import { calcBoundingCoords } from "./utils";
-import merge from "lodash/mergeWith";
+import { shallowRef, onMounted, watch } from "vue";
+import { nameMap, registerMap, coordsMap } from "./assets/geoJson";
 import { useOption } from "./hooks/useOption";
 
-// const designWidth = 800;
-// const designHeight = 800;
-// const designWidthPx = `1400px`;
-// const designHeightPx = `1200px`;
-
-onBeforeMount(() => {
-  // document.documentElement.style.setProperty("--design-width", designWidthPx);
-  // document.documentElement.style.setProperty("--design-height", designHeightPx);
-});
-
-echarts.registerMap("china", json.china);
-echarts.registerMap("hubei", json.hubei);
-echarts.registerMap("wuhan", json.wuhan);
-
-// 辅助数据
-const chinaBoundingCoordsMap = json.china.features.reduce((acc, feature) => {
-  return {
-    ...acc,
-    [feature.properties.name]: {
-      boundingCoords: calcBoundingCoords(feature),
-    },
-  };
-}, {});
-
-const hubeiBoundingCoordsMap = json.hubei.features.reduce((acc, feature) => {
-  return {
-    ...acc,
-    [feature.properties.name]: {
-      boundingCoords: calcBoundingCoords(feature),
-    },
-  };
-}, {});
-
-// 坐标的字典
-const coordsMap = merge(chinaBoundingCoordsMap, hubeiBoundingCoordsMap);
+registerMap(echarts);
 
 const { option, updateOption, goUp, goDown } = useOption({
   coordsMap,
+  nameMap,
 });
 
 watch(
@@ -82,24 +47,24 @@ onMounted(() => {
   // 点击事件
   chart.on("click", function (params) {
     console.log("click", params);
-
-    goDown();
-    goUp();
-
-    chart.setOption({
-      geo: chart.getOption().geo.map((item) => ({
-        ...item,
-        zoom: 2,
-      })),
-    });
+    if (params.name.includes("市")) {
+      updateOption({
+        level: 3,
+        name: params.name,
+      });
+    }
     debug("点击事件");
   });
 
   setTimeout(() => {
     updateOption({
       level: 2,
+      name: "湖北省",
     });
   }, 0);
+
+  goDown();
+  goUp();
 });
 </script>
 
@@ -111,8 +76,5 @@ onMounted(() => {
 .chart-container {
   width: 100%;
   height: 100%;
-  /* width: var(--design-width);
-  height: var(--design-height); */
 }
 </style>
-./hubei ./assets/geoJson
