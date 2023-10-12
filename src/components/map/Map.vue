@@ -47,12 +47,23 @@ onMounted(() => {
   // 点击事件
   chart.on("click", function (params) {
     console.log("click", params);
-    if (params.name.includes("市")) {
-      updateOption({
-        level: 3,
-        name: params.name,
-      });
-    }
+
+    const level =
+      params.name === "中国"
+        ? 1
+        : params.name === "湖北省"
+        ? 2
+        : params.name.includes("市")
+        ? 3
+        : params.name.includes("区")
+        ? 4
+        : 2;
+
+    updateOption({
+      level,
+      name: params.name,
+    });
+
     debug("点击事件");
   });
 

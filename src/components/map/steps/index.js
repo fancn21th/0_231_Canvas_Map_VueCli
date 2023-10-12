@@ -15,6 +15,7 @@
 import l1 from "./geo/l1";
 import l2 from "./geo/l2";
 import l3 from "./geo/l3";
+import l4 from "./geo/l4";
 
 const stepsToRun = ["L0.1", "L0.2", "L1.1"];
 
@@ -44,6 +45,7 @@ const specificStepFuncsForGeo = {
   l1,
   l2,
   l3,
+  l4,
 };
 
 const stepFuncsForGeoL1 = {
@@ -59,6 +61,11 @@ const stepFuncsForGeoL2 = {
 const stepFuncsForGeoL3 = {
   ...stepFuncsForGeo,
   ...specificStepFuncsForGeo.l3,
+};
+
+const stepFuncsForGeoL4 = {
+  ...stepFuncsForGeo,
+  ...specificStepFuncsForGeo.l4,
 };
 
 const debugge = (stepFuncName, title, pack) => {
@@ -90,6 +97,7 @@ const resolveGeo = (action) => {
       runSteps(stepFuncsForGeoL1, action),
       runSteps(stepFuncsForGeoL2, action),
       runSteps(stepFuncsForGeoL3, action),
+      runSteps(stepFuncsForGeoL4, action),
     ],
   };
 };
