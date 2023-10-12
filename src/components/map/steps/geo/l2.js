@@ -22,20 +22,29 @@ export default {
       boundingCoords: coordsMap[name].boundingCoords,
     };
   },
-  "L1.1": (preOption, action) => {
+  "L1.1": (preOption, { level }) => {
     return {
       itemStyle: {
-        color: {
-          image: bgImg,
-          repeat: "no-repeat",
-        },
-        borderWidth: 3,
-        borderColor: "#fff",
-        opacity: 0.5,
-        shadowColor: "rgba(0, 0, 0, 0.5)",
-        shadowBlur: 10,
-        shadowOffsetX: 15,
-        shadowOffsetY: 15,
+        ...(level === 2
+          ? {
+              color: {
+                image: bgImg,
+                repeat: "no-repeat",
+              },
+              shadowColor: "rgba(0, 0, 0, 0.5)",
+              shadowBlur: 10,
+              shadowOffsetX: 15,
+              shadowOffsetY: 15,
+              borderWidth: 3,
+              borderColor: "#fff",
+              opacity: 0.5,
+            }
+          : {
+              // 需要设置才能取消
+              borderWidth: 1,
+              borderColor: "#fff",
+              opacity: 0.1,
+            }),
       },
     };
   },
