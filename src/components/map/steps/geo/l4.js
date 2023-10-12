@@ -2,7 +2,7 @@
 
 import bgImg from "../../assets/bg.png";
 
-// 第三层的地图
+// 最顶层的地图
 export default {
   "L0.1": (preOption, { nameMap, name, level }) => {
     return {

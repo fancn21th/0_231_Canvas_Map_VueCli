@@ -73,19 +73,41 @@ onMounted(() => {
       name: "湖北省",
     });
   }, 0);
-
-  goDown();
-  goUp();
 });
 </script>
 
 <template>
-  <div class="chart-container" ref="chartRef"></div>
+  <div class="wrapper">
+    <div class="chart-container" ref="chartRef"></div>
+    <div class="control">
+      <button @click="goUp">上一级</button>
+      <button @click="goDown">下一级</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.wrapper,
 .chart-container {
   width: 100%;
   height: 100%;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.control {
+  width: 200px;
+  height: 200px;
+  background-color: red;
+  position: absolute;
+  z-index: 999;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 </style>
