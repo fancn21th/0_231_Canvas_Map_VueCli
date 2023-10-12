@@ -23,6 +23,7 @@ export const stepsMap = {
   "L1.1": "绘制背景",
   "L1.2": "绘制阴影",
   "L1.3": "绘制边框",
+  "L1.4": "绘制高亮",
 };
 
 const donone = (preOption, action) => {
@@ -58,10 +59,22 @@ const stepFuncsForGeoL3 = {
   ...specificStepFuncsForGeo.l3,
 };
 
+const debugge = (stepFuncName, title, pack) => {
+  console.log(stepFuncName, title, pack);
+};
+
 const runSteps = (stepFuncs, action) => {
   return stepsToRun.reduce((preOption, stepFuncName) => {
+    debugge(stepsMap[stepFuncName], "执行前", { action, preOption });
+
     const stepFunc = stepFuncs[stepFuncName];
     const nextOption = stepFunc(preOption, action);
+
+    debugge(stepsMap[stepFuncName], "执行后", {
+      action,
+      preOption,
+      nextOption,
+    });
     return nextOption;
   }, {});
 };
