@@ -43,7 +43,7 @@ export default {
               // 需要设置才能取消
               borderWidth: 1,
               borderColor: "#fff",
-              opacity: 0.1,
+              opacity: 0.3,
             }),
       },
     };
