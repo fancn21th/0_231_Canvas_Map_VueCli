@@ -31,15 +31,15 @@ import l4 from "./geo/l4";
 // };
 // // utils ends
 
-const stepsToRun = ["L0.1", "L0.2", "L1.1"];
+const stepsForGeo = ["S0.1", "S0.2", "S1.1"];
 
-export const stepsMap = {
-  "L0.1": "基础配置",
-  "L0.2": "地图层级",
-  "L1.1": "绘制背景",
-  "L1.2": "绘制阴影",
-  "L1.3": "绘制边框",
-  "L1.4": "绘制高亮",
+export const stepsMapForGeo = {
+  "S0.1": "基础配置",
+  "S0.2": "地图层级",
+  "S1.1": "绘制背景",
+  "S1.2": "绘制阴影",
+  "S1.3": "绘制边框",
+  "S1.4": "绘制高亮",
 };
 
 const donone = (preOption, action) => {
@@ -48,11 +48,11 @@ const donone = (preOption, action) => {
 };
 
 const stepFuncsForGeo = {
-  "L0.1": donone,
-  "L0.2": donone,
-  "L1.1": donone,
-  "L1.2": donone,
-  "L1.3": donone,
+  "S0.1": donone,
+  "S0.2": donone,
+  "S1.1": donone,
+  "S1.2": donone,
+  "S1.3": donone,
 };
 
 const specificStepFuncsForGeo = {
@@ -86,9 +86,12 @@ const debugge = (stepFuncName, title, pack) => {
   console.log(stepFuncName, title, pack);
 };
 
-const runSteps = (stepFuncs, action) => {
-  return stepsToRun.reduce((preOption, stepFuncName) => {
-    debugge(stepsMap[stepFuncName], "before runSteps", { action, preOption });
+const runSteps = (steps, stepFuncs, action) => {
+  return steps.reduce((preOption, stepFuncName) => {
+    // debugge(stepsMapForGeo[stepFuncName], "before runSteps", {
+    //   action,
+    //   preOption,
+    // });
 
     const stepFunc = stepFuncs[stepFuncName];
 
@@ -99,27 +102,40 @@ const runSteps = (stepFuncs, action) => {
       ...partOfNextOption,
     };
 
-    debugge(stepsMap[stepFuncName], "after runSteps", {
-      action,
-      preOption,
-      partOfNextOption,
-      nextOption,
-    });
+    // debugge(stepsMapForGeo[stepFuncName], "after runSteps", {
+    //   action,
+    //   preOption,
+    //   partOfNextOption,
+    //   nextOption,
+    // });
     return nextOption;
   }, {});
 };
 
 const resolveGeo = (action) => {
-  return {
+  const nextGeo = {
     geo: [
-      runSteps(stepFuncsForGeoL1, action),
-      runSteps(stepFuncsForGeoL2, action),
-      runSteps(stepFuncsForGeoL3, action),
-      runSteps(stepFuncsForGeoL4, action),
+      runSteps(stepsForGeo, stepFuncsForGeoL1, action),
+      runSteps(stepsForGeo, stepFuncsForGeoL2, action),
+      runSteps(stepsForGeo, stepFuncsForGeoL3, action),
+      runSteps(stepsForGeo, stepFuncsForGeoL4, action),
     ],
+  };
+
+  debugge("resolve geo", "resolve geo", nextGeo);
+
+  return nextGeo;
+};
+
+const resolveSeries = () => {
+  return {
+    series: [],
   };
 };
 
 export const resolveNextOption = (action) => {
-  return resolveGeo(action);
+  return {
+    ...resolveGeo(action),
+    ...resolveSeries(action),
+  };
 };
