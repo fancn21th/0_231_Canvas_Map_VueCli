@@ -65,14 +65,18 @@ const runSteps = (stepFuncs, action) => {
     debugge(stepsMap[stepFuncName], "before runSteps", { action, preOption });
 
     const stepFunc = stepFuncs[stepFuncName];
+
+    const partOfNextOption = stepFunc(preOption, action);
+
     const nextOption = {
       ...preOption,
-      ...stepFunc(preOption, action),
+      ...partOfNextOption,
     };
 
     debugge(stepsMap[stepFuncName], "after runSteps", {
       action,
       preOption,
+      partOfNextOption,
       nextOption,
     });
     return nextOption;
