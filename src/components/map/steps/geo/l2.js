@@ -6,6 +6,7 @@ import bgImg from "../../assets/bg.png";
 export default {
   "S0.1": (preOption, { coordsMap }) => {
     return {
+      show: true,
       id: "S2",
       zlevel: 2,
       roam: true,
@@ -31,13 +32,8 @@ export default {
                 image: bgImg,
                 repeat: "no-repeat",
               },
-              shadowColor: "rgba(0, 0, 0, 0.5)",
-              shadowBlur: 10,
-              shadowOffsetX: 15,
-              shadowOffsetY: 15,
               borderWidth: 3,
               borderColor: "#fff",
-              opacity: 0.5,
             }
           : {
               color: "rgba(0, 0, 0, 0.1)",

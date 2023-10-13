@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import bgImg from "../../assets/bg.png";
 
 // 最底层的地图
 export default {
@@ -25,6 +26,22 @@ export default {
       itemStyle: {
         color: "transparent",
       },
+      regions: [
+        {
+          name: "湖北省",
+          selected: true,
+          color: {
+            image: bgImg,
+            repeat: "no-repeat",
+          },
+          itemStyle: {
+            shadowColor: "rgba(0, 0, 0, .5)",
+            shadowBlur: 10,
+            shadowOffsetX: 10,
+            shadowOffsetY: 20,
+          },
+        },
+      ],
     };
   },
 };

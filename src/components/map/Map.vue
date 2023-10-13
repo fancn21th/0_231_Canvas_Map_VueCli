@@ -76,18 +76,29 @@ onMounted(() => {
       <button @click="goUp">上一级</button>
       <button @click="goDown">下一级</button>
     </div>
+    <div class="background"></div>
   </div>
 </template>
 
 <style scoped>
 .wrapper,
-.chart-container {
+.chart-container,
+.background {
   width: 100%;
   height: 100%;
 }
 
 .wrapper {
   position: relative;
+}
+
+.background {
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-image: url("./assets/bg.png");
+  opacity: 0.7;
 }
 
 .control {
