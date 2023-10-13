@@ -5,6 +5,32 @@ import l2 from "./geo/l2";
 import l3 from "./geo/l3";
 import l4 from "./geo/l4";
 
+// // utils
+// const memo = (func) => (preOption, action) => {
+//   const memoMap = new Map();
+
+//   const runFunc = () => {
+//     if (memoMap.has(action)) {
+//       console.log("memo 命中", action);
+//       return memoMap.get(action);
+//     }
+//     const result = func(preOption, action);
+//     memoMap.set(action, result);
+//     return result;
+//   };
+
+//   return runFunc();
+// };
+
+// const memorize = (funcObject) => {
+//   return Object.keys(funcObject).reduce((pre, key) => {
+//     const func = funcObject[key];
+//     pre[key] = memo(func);
+//     return pre;
+//   }, {});
+// };
+// // utils ends
+
 const stepsToRun = ["L0.1", "L0.2", "L1.1"];
 
 export const stepsMap = {
