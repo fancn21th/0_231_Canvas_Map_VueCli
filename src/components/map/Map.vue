@@ -30,18 +30,12 @@ const chartRef = shallowRef(null);
 // echarts 实例
 let chart = null;
 
-// debugger
-const debug = (stage) => {
-  console.log(stage, "chart.getOption()", chart.getOption());
-};
-
 onMounted(() => {
   chart = echarts.init(chartRef.value);
 
   // 移动事件
   chart.on("georoam", function (params) {
     console.log("georoam", params);
-    debug("拖动事件");
   });
 
   // 点击事件
@@ -63,10 +57,9 @@ onMounted(() => {
       level,
       name: params.name,
     });
-
-    debug("点击事件");
   });
 
+  // 第一次渲染
   setTimeout(() => {
     updateOption({
       level: 2,
