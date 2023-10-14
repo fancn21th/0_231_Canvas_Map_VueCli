@@ -27,7 +27,7 @@ export default {
     };
   },
   // 绘制背景/阴影
-  "S1.1": (preOption, { level }) => {
+  "S1.1": (preOption, { level, name }) => {
     switch (level) {
       case 3:
         return {
@@ -39,6 +39,29 @@ export default {
             borderWidth: 3,
             borderColor: "#fff",
           },
+        };
+
+      case 4:
+        return {
+          itemStyle: {
+            color: "transparent",
+          },
+          regions: [
+            {
+              name,
+              selected: true,
+              color: {
+                image: bgImg,
+                repeat: "no-repeat",
+              },
+              itemStyle: {
+                shadowColor: "rgba(0, 0, 0, .5)",
+                shadowBlur: 10,
+                shadowOffsetX: 10,
+                shadowOffsetY: 20,
+              },
+            },
+          ],
         };
 
       default:

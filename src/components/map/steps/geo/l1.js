@@ -4,8 +4,9 @@ import bgImg from "../../assets/bg.png";
 // 最底层的地图
 export default {
   // 基础配置
-  "S0.1": (preOption, { name }) => {
+  "S0.1": (preOption, { name, level }) => {
     return {
+      show: level <= 2,
       id: "S1",
       zlevel: 1,
       roam: true,
@@ -15,6 +16,7 @@ export default {
           show: true,
         },
       },
+      silent: true,
     };
   },
   // 地图层级
@@ -35,22 +37,24 @@ export default {
             {
               name: "湖北省",
               selected: true,
-              color: {
-                image: bgImg,
-                repeat: "no-repeat",
-              },
-              itemStyle: {
-                shadowColor: "rgba(0, 0, 0, .5)",
-                shadowBlur: 10,
-                shadowOffsetX: 10,
-                shadowOffsetY: 20,
-              },
             },
           ],
+          select: {
+            itemStyle: {
+              shadowColor: "rgba(0, 0, 0, .5)",
+              shadowBlur: 10,
+              shadowOffsetX: 10,
+              shadowOffsetY: 20,
+            },
+          },
         };
 
       default:
-        return { itemStyle: { color: "transparent" } };
+        return {
+          itemStyle: {
+            color: "transparent",
+          },
+        };
     }
   },
 };

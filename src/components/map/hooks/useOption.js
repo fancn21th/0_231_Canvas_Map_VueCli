@@ -7,6 +7,8 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
   const currentLevel = ref(2);
 
   const updateOption = (action) => {
+    console.log("action", action);
+
     try {
       const { level, name } = action;
 

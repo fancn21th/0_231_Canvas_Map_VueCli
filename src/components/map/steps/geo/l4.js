@@ -35,11 +35,6 @@ export default {
         },
         borderWidth: 3,
         borderColor: "#fff",
-        opacity: 0.5,
-        shadowColor: "rgba(0, 0, 0, 0.5)",
-        shadowBlur: 10,
-        shadowOffsetX: 15,
-        shadowOffsetY: 15,
       },
     };
   },

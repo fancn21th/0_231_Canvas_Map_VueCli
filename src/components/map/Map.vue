@@ -34,9 +34,9 @@ onMounted(() => {
   chart = echarts.init(chartRef.value);
 
   // 移动事件
-  chart.on("georoam", function (params) {
-    console.log("georoam", params);
-  });
+  // chart.on("georoam", function (params) {
+  //   console.log("georoam", params);
+  // });
 
   // 点击事件
   chart.on("click", function (params) {
@@ -55,7 +55,7 @@ onMounted(() => {
 
     updateOption({
       level,
-      name: params.name,
+      name: params.name || "湖北省",
     });
   });
 
@@ -63,7 +63,7 @@ onMounted(() => {
   setTimeout(() => {
     updateOption({
       level: 3,
-      name: "宜昌市",
+      name: "武汉市",
     });
   }, 0);
 });
@@ -100,7 +100,7 @@ onMounted(() => {
   top: 0;
   background-image: url("./assets/bg.png");
   background-size: cover;
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .control {

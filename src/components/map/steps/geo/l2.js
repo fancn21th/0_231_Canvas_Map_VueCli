@@ -5,9 +5,9 @@ import bgImg from "../../assets/bg.png";
 // 倒数第二层的地图
 export default {
   // 基础配置
-  "S0.1": (preOption, { name }) => {
+  "S0.1": (preOption, { level }) => {
     return {
-      show: true,
+      show: 2 <= level && level <= 3,
       id: "S2",
       zlevel: 2,
       roam: true,
@@ -40,7 +40,7 @@ export default {
           },
         };
 
-      default:
+      case 3:
         return {
           itemStyle: {
             color: "transparent",
@@ -62,6 +62,9 @@ export default {
             },
           ],
         };
+
+      default:
+        return { itemStyle: { color: "transparent" } };
     }
   },
 };
