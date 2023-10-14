@@ -40,6 +40,11 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
           name: next,
         });
     },
-    goMultiple: () => {},
+    goMultiple: () => {
+      updateOption({
+        level: 2,
+        name: "mix1",
+      });
+    },
   };
 };

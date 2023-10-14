@@ -1,20 +1,3 @@
-export const nameMap = {
-  // 武汉市
-  武汉市: "wuhan",
-  黄陂区: "huangpi",
-  // 十堰市
-  十堰市: "shiyan",
-  // 宜昌市
-  宜昌市: "yichang",
-  秭归县: "zigui",
-  长阳土家族自治县: "changyang",
-  // 恩施
-  恩施土家族苗族自治州: "enshi",
-  巴东县: "badong",
-  // 神农架
-  神农架林区: "shennongjia",
-};
-
 export { default as china } from "./country/中国.json";
 export { default as hubei } from "./province/湖北省.json";
 

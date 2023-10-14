@@ -4,6 +4,7 @@ import bgImg from "../../assets/bg.png";
 
 // 最顶层的地图
 export default {
+  // 基础配置
   "S0.1": (preOption, { nameMap, name, level }) => {
     return {
       show: level === 4,
@@ -17,12 +18,14 @@ export default {
       },
     };
   },
+  // 地图层级
   "S0.2": (preOption, { coordsMap, name, level, nameMap }) => {
     return {
       map: level === 4 ? nameMap[name] : "huangpi",
       boundingCoords: coordsMap[name].boundingCoords,
     };
   },
+  // 绘制背景/阴影
   "S1.1": (preOption, action) => {
     return {
       itemStyle: {

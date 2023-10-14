@@ -1,30 +1,20 @@
 import { calcBoundingCoords } from "../../utils";
 import merge from "lodash/mergeWith";
 
-import { china, hubei, wuhan, huangpi, shiyan, yichang } from "./nameMap";
+import { dataMap } from "./mapping";
 
 // 注册地图
 export const registerMap = (echarts) => {
   if (!echarts) throw new Error("echarts is required");
-  echarts.registerMap("china", china);
-  echarts.registerMap("hubei", hubei);
 
-  //  武汉市
-  echarts.registerMap("wuhan", wuhan);
-  echarts.registerMap("huangpi", huangpi);
-
-  // 十堰市
-  echarts.registerMap("shiyan", shiyan);
-
-  // 宜昌市
-  echarts.registerMap("yichang", yichang);
+  Object.keys(dataMap).forEach((name) => {
+    echarts.registerMap(name, dataMap[name]);
+  });
 };
 
-// areas
-const areas = [china, hubei, wuhan, shiyan, yichang, huangpi];
-
 // 坐标的字典
-export const coordsMap = areas.reduce((acc, area) => {
+export const coordsMap = Object.keys(dataMap).reduce((acc, areaName) => {
+  const area = dataMap[areaName];
   return merge(
     acc,
     area.features.reduce((acc, feature) => {

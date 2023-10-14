@@ -3,6 +3,7 @@ import bgImg from "../../assets/bg.png";
 
 // 最底层的地图
 export default {
+  // 基础配置
   "S0.1": (preOption, { coordsMap }) => {
     return {
       id: "S1",
@@ -16,11 +17,13 @@ export default {
       },
     };
   },
+  // 地图层级
   "S0.2": (preOption, { coordsMap, name }) => {
     return {
       boundingCoords: coordsMap[name].boundingCoords,
     };
   },
+  // 绘制背景
   "S1.1": (preOption, action) => {
     return {
       itemStyle: {

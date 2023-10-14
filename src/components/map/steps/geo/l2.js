@@ -4,6 +4,7 @@ import bgImg from "../../assets/bg.png";
 
 // 倒数第二层的地图
 export default {
+  // 基础配置
   "S0.1": (preOption, { coordsMap }) => {
     return {
       show: true,
@@ -18,11 +19,13 @@ export default {
       },
     };
   },
+  // 地图层级
   "S0.2": (preOption, { coordsMap, name }) => {
     return {
       boundingCoords: coordsMap[name].boundingCoords,
     };
   },
+  // 绘制背景/阴影
   "S1.1": (preOption, { level }) => {
     return {
       itemStyle: {

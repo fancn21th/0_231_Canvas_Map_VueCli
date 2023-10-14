@@ -5,54 +5,27 @@ import l2 from "./geo/l2";
 import l3 from "./geo/l3";
 import l4 from "./geo/l4";
 
-// // utils
-// const memo = (func) => (preOption, action) => {
-//   const memoMap = new Map();
-
-//   const runFunc = () => {
-//     if (memoMap.has(action)) {
-//       console.log("memo 命中", action);
-//       return memoMap.get(action);
-//     }
-//     const result = func(preOption, action);
-//     memoMap.set(action, result);
-//     return result;
-//   };
-
-//   return runFunc();
-// };
-
-// const memorize = (funcObject) => {
-//   return Object.keys(funcObject).reduce((pre, key) => {
-//     const func = funcObject[key];
-//     pre[key] = memo(func);
-//     return pre;
-//   }, {});
-// };
-// // utils ends
-
 const stepsForGeo = ["S0.1", "S0.2", "S1.1"];
 
 export const stepsMapForGeo = {
   "S0.1": "基础配置",
   "S0.2": "地图层级",
-  "S1.1": "绘制背景",
-  "S1.2": "绘制阴影",
-  "S1.3": "绘制边框",
-  "S1.4": "绘制高亮",
+  "S1.1": "绘制背景/阴影",
+  "S1.2": "绘制边框",
+  "S1.3": "绘制高亮",
 };
 
-const donone = (preOption, action) => {
+const doNothing = (preOption, action) => {
   const nextOption = preOption;
   return nextOption;
 };
 
 const stepFuncsForGeo = {
-  "S0.1": donone,
-  "S0.2": donone,
-  "S1.1": donone,
-  "S1.2": donone,
-  "S1.3": donone,
+  "S0.1": doNothing,
+  "S0.2": doNothing,
+  "S1.1": doNothing,
+  "S1.2": doNothing,
+  "S1.3": doNothing,
 };
 
 const specificStepFuncsForGeo = {
