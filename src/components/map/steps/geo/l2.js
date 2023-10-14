@@ -7,7 +7,7 @@ export default {
   // 基础配置
   "S0.1": (preOption, { level }) => {
     return {
-      show: 2 <= level && level <= 3,
+      show: true,
       id: "S2",
       zlevel: 2,
       roam: true,

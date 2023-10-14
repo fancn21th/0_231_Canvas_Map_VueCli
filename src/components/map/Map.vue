@@ -16,7 +16,9 @@ watch(
   option,
   () => {
     if (option?.value) {
-      chart.setOption(option.value);
+      // TODO: 更新策略
+      // https://echarts.apache.org/zh/api.html#echartsInstance.setOption
+      chart.setOption(option.value, true);
     }
   },
   {
@@ -62,8 +64,8 @@ onMounted(() => {
   // 第一次渲染
   setTimeout(() => {
     updateOption({
-      level: 3,
-      name: "武汉市",
+      level: 2,
+      name: "湖北省",
     });
   }, 0);
 });
