@@ -2,14 +2,14 @@
 <script setup>
 import * as echarts from "echarts";
 import { shallowRef, onMounted, watch } from "vue";
-import { nameMap, registerMap, coordsMap } from "./assets/geoJson";
+import { getNameMap, registerMap, getCoordsMap } from "./assets/geoJson";
 import { useOption } from "./hooks/useOption";
 
 registerMap(echarts);
 
 const { option, updateOption, goUp, goDown, goMultiple } = useOption({
-  coordsMap,
-  nameMap,
+  coordsMap: getCoordsMap(),
+  nameMap: getNameMap(),
 });
 
 watch(
@@ -75,7 +75,7 @@ onMounted(() => {
     <div class="control">
       <button @click="goUp">上一级</button>
       <button @click="goDown">下一级</button>
-      <button @click="goMultiple">多区域</button>
+      <button @click="goMultiple">混合</button>
     </div>
     <div class="background"></div>
   </div>

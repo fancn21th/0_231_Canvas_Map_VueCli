@@ -12,7 +12,7 @@ import {
 } from "./g";
 
 // name map
-export const nameMap = {
+const nameMap = {
   中国: "china",
   湖北省: "hubei",
   // 武汉市
@@ -32,7 +32,7 @@ export const nameMap = {
 };
 
 // data map
-export const dataMap = {
+const dataMap = {
   china,
   hubei,
   wuhan,
@@ -45,6 +45,17 @@ export const dataMap = {
   shennongjia,
 };
 
+// data name map
+export const getDataNameMap = () => {
+  const nameMap = getNameMap();
+  return Object.keys(nameMap).reduce((acc, name) => {
+    return {
+      ...acc,
+      [nameMap[name]]: name,
+    };
+  }, {});
+};
+
 const mixed = (names) => {
   return names.reduce(
     (acc, name) => {
@@ -52,12 +63,14 @@ const mixed = (names) => {
       const data = dataMap[area];
 
       const features = data.features || [];
+
       return {
         ...acc,
         features: acc.features.concat(features),
       };
     },
     {
+      type: "FeatureCollection",
       features: [],
     }
   );
@@ -69,3 +82,19 @@ export const mix1 = mixed([
   "长阳土家族自治县",
   "巴东县",
 ]);
+
+export const getNameMap = () => {
+  return {
+    ...nameMap,
+    // 定制化
+    混合: "mix1",
+  };
+};
+
+export const getDataMap = () => {
+  const combined = {
+    ...dataMap,
+    mix1,
+  };
+  return combined;
+};

@@ -1,10 +1,8 @@
-export const calcBoundingCoords = (feature) => {
+export const calcBoundingCoords = (coordinates) => {
   const boundingCoords = [
     [Infinity, -Infinity],
     [-Infinity, Infinity],
   ];
-
-  const coordinates = feature.geometry.coordinates;
 
   coordinates.forEach(function ([coords]) {
     coords.forEach(function (coord) {
