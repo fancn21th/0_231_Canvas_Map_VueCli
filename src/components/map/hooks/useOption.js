@@ -7,18 +7,24 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
   const currentLevel = ref(2);
 
   const updateOption = (action) => {
-    const { level, name } = action;
+    try {
+      const { level, name } = action;
 
-    history.value[level] = name;
+      history.value[level] = name;
 
-    currentLevel.value = level;
+      currentLevel.value = level;
 
-    const nextOption = resolveNextOption({
-      ...action,
-      coordsMap,
-      nameMap,
-    });
-    option.value = nextOption;
+      const nextOption = resolveNextOption({
+        ...action,
+        coordsMap,
+        nameMap,
+      });
+
+      option.value = nextOption;
+    } catch (error) {
+      alert("出错了");
+      console.error(error);
+    }
   };
 
   return {
@@ -42,8 +48,8 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
     },
     goMultiple: () => {
       updateOption({
-        level: 2,
-        name: "mix1",
+        level: 3,
+        name: "混合",
       });
     },
   };

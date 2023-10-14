@@ -4,7 +4,7 @@ import bgImg from "../../assets/bg.png";
 // 最底层的地图
 export default {
   // 基础配置
-  "S0.1": (preOption, { coordsMap }) => {
+  "S0.1": (preOption, { name }) => {
     return {
       id: "S1",
       zlevel: 1,
@@ -23,28 +23,34 @@ export default {
       boundingCoords: coordsMap[name].boundingCoords,
     };
   },
-  // 绘制背景
-  "S1.1": (preOption, action) => {
-    return {
-      itemStyle: {
-        color: "transparent",
-      },
-      regions: [
-        {
-          name: "湖北省",
-          selected: true,
-          color: {
-            image: bgImg,
-            repeat: "no-repeat",
-          },
+  // 绘制背景/阴影
+  "S1.1": (preOption, { level }) => {
+    switch (level) {
+      case 2:
+        return {
           itemStyle: {
-            shadowColor: "rgba(0, 0, 0, .5)",
-            shadowBlur: 10,
-            shadowOffsetX: 10,
-            shadowOffsetY: 20,
+            color: "transparent",
           },
-        },
-      ],
-    };
+          regions: [
+            {
+              name: "湖北省",
+              selected: true,
+              color: {
+                image: bgImg,
+                repeat: "no-repeat",
+              },
+              itemStyle: {
+                shadowColor: "rgba(0, 0, 0, .5)",
+                shadowBlur: 10,
+                shadowOffsetX: 10,
+                shadowOffsetY: 20,
+              },
+            },
+          ],
+        };
+
+      default:
+        return { itemStyle: { color: "transparent" } };
+    }
   },
 };

@@ -62,8 +62,8 @@ onMounted(() => {
   // 第一次渲染
   setTimeout(() => {
     updateOption({
-      level: 2,
-      name: "湖北省",
+      level: 3,
+      name: "宜昌市",
     });
   }, 0);
 });

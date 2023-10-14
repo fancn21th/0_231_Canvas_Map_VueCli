@@ -5,7 +5,7 @@ import bgImg from "../../assets/bg.png";
 // 倒数第二层的地图
 export default {
   // 基础配置
-  "S0.1": (preOption, { coordsMap }) => {
+  "S0.1": (preOption, { name }) => {
     return {
       show: true,
       id: "S2",
@@ -26,22 +26,42 @@ export default {
     };
   },
   // 绘制背景/阴影
-  "S1.1": (preOption, { level }) => {
-    return {
-      itemStyle: {
-        ...(level === 2
-          ? {
+  "S1.1": (preOption, { level, name }) => {
+    switch (level) {
+      case 2:
+        return {
+          itemStyle: {
+            color: {
+              image: bgImg,
+              repeat: "no-repeat",
+            },
+            borderWidth: 3,
+            borderColor: "#fff",
+          },
+        };
+
+      default:
+        return {
+          itemStyle: {
+            color: "transparent",
+          },
+          regions: [
+            {
+              name,
+              selected: true,
               color: {
                 image: bgImg,
                 repeat: "no-repeat",
               },
-              borderWidth: 3,
-              borderColor: "#fff",
-            }
-          : {
-              color: "rgba(0, 0, 0, 0.1)",
-            }),
-      },
-    };
+              itemStyle: {
+                shadowColor: "rgba(0, 0, 0, .5)",
+                shadowBlur: 10,
+                shadowOffsetX: 10,
+                shadowOffsetY: 20,
+              },
+            },
+          ],
+        };
+    }
   },
 };
