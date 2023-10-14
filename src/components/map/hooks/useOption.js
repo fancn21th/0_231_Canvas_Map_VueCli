@@ -40,5 +40,6 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
           name: next,
         });
     },
+    goMultiple: () => {},
   };
 };

@@ -7,7 +7,7 @@ import { useOption } from "./hooks/useOption";
 
 registerMap(echarts);
 
-const { option, updateOption, goUp, goDown } = useOption({
+const { option, updateOption, goUp, goDown, goMultiple } = useOption({
   coordsMap,
   nameMap,
 });
@@ -75,6 +75,7 @@ onMounted(() => {
     <div class="control">
       <button @click="goUp">上一级</button>
       <button @click="goDown">下一级</button>
+      <button @click="goMultiple">多区域</button>
     </div>
     <div class="background"></div>
   </div>
@@ -98,6 +99,7 @@ onMounted(() => {
   left: 0;
   top: 0;
   background-image: url("./assets/bg.png");
+  background-size: cover;
   opacity: 0.7;
 }
 
