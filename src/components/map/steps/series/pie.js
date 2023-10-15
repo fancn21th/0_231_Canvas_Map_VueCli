@@ -1,14 +1,7 @@
-function getPieOption({ center, name }) {
-  // const data = ["A", "B", "C", "D"].map((t) => {
-  //   return {
-  //     value: Math.round(Math.random() * 100),
-  //     name: "Category " + t,
-  //   };
-  // });
+function getPieOption({ center, name, data }) {
   return {
     type: "pie",
     coordinateSystem: "geo",
-    seriesLayoutBy: "row",
     tooltip: {
       formatter: "{a}:{b}:{c}",
     },
@@ -21,19 +14,29 @@ function getPieOption({ center, name }) {
     animationDuration: 0,
     radius: 20,
     center,
-    // data,
     zlevel: 5,
     name,
+    data,
   };
 }
 
-export default ({ coordsMap }) => {
+export default ({ coordsMap, dataset }) => {
   return Object.keys(coordsMap)
     .map((name) => {
       const area = coordsMap[name];
       if (area.parent !== "湖北省") return null;
       const center = area.properties?.centroid;
-      return center ? getPieOption({ center, name }) : null;
+
+      const index = dataset[0].indexOf(name);
+
+      const data = dataset.slice(1).map((item) => {
+        return {
+          name: item[0],
+          value: item[index],
+        };
+      });
+
+      return center ? getPieOption({ center, name, data }) : null;
     })
     .filter((item) => item);
 };

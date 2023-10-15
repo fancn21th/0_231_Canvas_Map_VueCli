@@ -101,6 +101,7 @@ export const resolveNextOption = (action) => {
   return {
     tooltip: {},
     legend: {},
+    ...resolveGeo(action),
     ...(dataset
       ? {
           dataset: {
@@ -108,7 +109,6 @@ export const resolveNextOption = (action) => {
           },
         }
       : {}),
-    ...resolveGeo(action),
     ...(dataset ? resolveSeries(action) : {}),
   };
 };
