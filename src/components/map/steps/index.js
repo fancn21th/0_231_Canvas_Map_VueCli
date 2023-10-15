@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-import l1 from "./geo/l1";
-import l2 from "./geo/l2";
-import l3 from "./geo/l3";
-import l4 from "./geo/l4";
+import { l1, l2, l3, l4 } from "./geo";
+import s from "./series";
 
 const stepsForGeo = ["S0.1", "S0.2", "S1.1"];
 
@@ -28,44 +26,28 @@ const stepFuncsForGeo = {
   "S1.3": doNothing,
 };
 
-const specificStepFuncsForGeo = {
-  l1,
-  l2,
-  l3,
-  l4,
-};
-
 const stepFuncsForGeoL1 = {
   ...stepFuncsForGeo,
-  ...specificStepFuncsForGeo.l1,
+  ...l1,
 };
 
 const stepFuncsForGeoL2 = {
   ...stepFuncsForGeo,
-  ...specificStepFuncsForGeo.l2,
+  ...l2,
 };
 
 const stepFuncsForGeoL3 = {
   ...stepFuncsForGeo,
-  ...specificStepFuncsForGeo.l3,
+  ...l3,
 };
 
 const stepFuncsForGeoL4 = {
   ...stepFuncsForGeo,
-  ...specificStepFuncsForGeo.l4,
-};
-
-const debugge = (stepFuncName, title, pack) => {
-  console.log(stepFuncName, title, pack);
+  ...l4,
 };
 
 const runSteps = (steps, stepFuncs, action) => {
   return steps.reduce((preOption, stepFuncName) => {
-    // debugge(stepsMapForGeo[stepFuncName], "before runSteps", {
-    //   action,
-    //   preOption,
-    // });
-
     const stepFunc = stepFuncs[stepFuncName];
 
     const partOfNextOption = stepFunc(preOption, action);
@@ -75,12 +57,6 @@ const runSteps = (steps, stepFuncs, action) => {
       ...partOfNextOption,
     };
 
-    // debugge(stepsMapForGeo[stepFuncName], "after runSteps", {
-    //   action,
-    //   preOption,
-    //   partOfNextOption,
-    //   nextOption,
-    // });
     return nextOption;
   }, {});
 };
@@ -95,15 +71,19 @@ const resolveGeo = (action) => {
     ],
   };
 
-  debugge("resolve geo", "resolve geo", nextGeo);
+  console.log("resolve geo", nextGeo);
 
   return nextGeo;
 };
 
-const resolveSeries = () => {
-  return {
-    series: [],
+const resolveSeries = (action) => {
+  const nextSeries = {
+    series: [...s(action)],
   };
+
+  console.log("resolve series", nextSeries);
+
+  return nextSeries;
 };
 
 export const resolveNextOption = (action) => {
