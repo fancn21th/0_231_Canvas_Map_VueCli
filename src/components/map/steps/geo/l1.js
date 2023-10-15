@@ -7,6 +7,7 @@ export default {
   "S0.1": (preOption, { name, level }) => {
     return {
       show: true,
+      silent: true,
       id: "S1",
       zlevel: 1,
       roam: true,
@@ -16,7 +17,6 @@ export default {
           show: true,
         },
       },
-      silent: true,
     };
   },
   // 地图层级
@@ -28,6 +28,7 @@ export default {
   // 绘制背景/阴影
   "S1.1": (preOption, { level }) => {
     switch (level) {
+      // 在第二层的时候，绘制湖北省背景
       case 2:
         return {
           itemStyle: {

@@ -8,6 +8,7 @@ export default {
   "S0.1": (preOption, { level }) => {
     return {
       show: true,
+      silent: level > 2,
       id: "S2",
       zlevel: 2,
       roam: true,
@@ -39,7 +40,7 @@ export default {
             borderColor: "#fff",
           },
         };
-
+      // 在第三层的时候，绘制相关城市背景
       case 3:
         return {
           itemStyle: {

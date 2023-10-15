@@ -3,24 +3,26 @@ import { resolveNextOption } from "../steps";
 
 export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
   const option = ref(null);
-  const history = ref({});
-  const currentLevel = ref(2);
+  const history = ref(null);
 
   const updateOption = (action) => {
-    console.log("action", action);
-
     try {
-      const { level, name } = action;
+      const { name } = action;
 
-      history.value[level] = name;
+      history.value = name;
 
-      currentLevel.value = level;
+      const level = coordsMap[name].level;
 
-      const nextOption = resolveNextOption({
+      const nextAction = {
         ...action,
+        level,
         coordsMap,
         nameMap,
-      });
+      };
+
+      console.log("action", nextAction);
+
+      const nextOption = resolveNextOption(nextAction);
 
       option.value = nextOption;
     } catch (error) {
@@ -33,24 +35,13 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
     option,
     updateOption,
     goUp: () => {
-      const next = history.value[currentLevel.value - 1];
-      next &&
-        updateOption({
-          level: currentLevel.value - 1,
-          name: next,
-        });
-    },
-    goDown: () => {
-      const next = history.value[currentLevel.value + 1];
-      next &&
-        updateOption({
-          level: currentLevel.value + 1,
-          name: next,
-        });
+      const parent = coordsMap[history.value].parent;
+      updateOption({
+        name: parent,
+      });
     },
     goMultiple: () => {
       updateOption({
-        level: 3,
         name: "混合",
       });
     },

@@ -8,6 +8,7 @@ export default {
   "S0.1": (preOption, { nameMap, name, level }) => {
     return {
       show: level >= 3,
+      silent: level > 3,
       id: "S3",
       zlevel: 3,
       map: nameMap[name],
@@ -40,7 +41,7 @@ export default {
             borderColor: "#fff",
           },
         };
-
+      // 在第四层的时候，绘制相关城市背景
       case 4:
         return {
           itemStyle: {

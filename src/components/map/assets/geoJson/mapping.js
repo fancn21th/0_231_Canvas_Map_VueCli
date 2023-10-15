@@ -12,6 +12,8 @@ import {
   shennongjia,
 } from "./g";
 
+import { getCoordsMap } from "./helper";
+
 // name map
 const nameMap = {
   中国: "china",
@@ -58,32 +60,27 @@ export const getDataNameMap = () => {
   }, {});
 };
 
-const mixed = (names) => {
-  return names.reduce(
-    (acc, name) => {
-      const area = nameMap[name];
-      const data = dataMap[area];
+const mixed = (names, option) => {
+  return names.reduce((acc, name) => {
+    const area = nameMap[name];
+    const data = dataMap[area];
 
-      const features = data.features || [];
+    const features = data.features || [];
 
-      return {
-        ...acc,
-        features: acc.features.concat(features),
-      };
-    },
-    {
-      type: "FeatureCollection",
-      features: [],
-    }
-  );
+    return {
+      ...acc,
+      features: acc.features.concat(features),
+    };
+  }, option);
 };
 
-export const mix1 = mixed([
-  "神农架林区",
-  "秭归县",
-  "长阳土家族自治县",
-  "巴东县",
-]);
+export const mix1 = mixed(
+  ["神农架林区", "秭归县", "长阳土家族自治县", "巴东县"],
+  {
+    type: "FeatureCollection",
+    features: [],
+  }
+);
 
 export const getNameMap = () => {
   return {
@@ -98,5 +95,24 @@ export const getDataMap = () => {
     ...dataMap,
     mix1,
   };
+
   return combined;
 };
+
+export const getCustomCoordsMap = () => {
+  return getCoordsMap({
+    customPropertiesMap: {
+      混合: {
+        properties: {
+          name: "混合",
+          adcode: "xx",
+          parent: {
+            adcode: 420000,
+          },
+        },
+      },
+    },
+  });
+};
+
+export { registerMap } from "./helper";
