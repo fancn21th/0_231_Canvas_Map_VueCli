@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import * as echarts from "echarts";
-import { shallowRef, onMounted, watch } from "vue";
+import { shallowRef, onMounted, watch, ref } from "vue";
 import { getNameMap, registerMap, getCustomCoordsMap } from "./assets/geoJson";
 import { useOption } from "./hooks/useOption";
 
@@ -11,6 +11,9 @@ const { option, updateOption, goUp, goMultiple } = useOption({
   coordsMap: getCustomCoordsMap(),
   nameMap: getNameMap(),
 });
+
+// chart 实例
+let chart = null;
 
 watch(
   option,
@@ -29,8 +32,7 @@ watch(
 
 const chartRef = shallowRef(null);
 
-// echarts 实例
-let chart = null;
+const history = ref(null);
 
 onMounted(() => {
   chart = echarts.init(chartRef.value);
@@ -42,41 +44,48 @@ onMounted(() => {
 
   // 点击事件
   chart.on("click", function (params) {
-    console.log("click", params);
-
-    const level =
-      params.name === "中国"
-        ? 1
-        : params.name === "湖北省"
-        ? 2
-        : params.name.includes("市")
-        ? 3
-        : params.name.includes("区")
-        ? 4
-        : 2;
+    console.log("点击下钻", params);
+    if (history.value === "混合") {
+      return;
+    }
 
     updateOption({
-      level,
       name: params.name || "湖北省",
     });
+
+    history.value = params.name;
   });
 
   // 第一次渲染
   setTimeout(() => {
     updateOption({
-      level: 2,
       name: "湖北省",
     });
   }, 0);
 });
+
+// 切换到上一级
+
+// 切换到混合区域
+const goToSpecific = () => {
+  console.log("点击下钻到混合");
+  history.value = "混合";
+  goMultiple();
+};
+
+const goToUpLevel = () => {
+  console.log("点击下钻到上一级");
+  history.value = null;
+  goUp();
+};
 </script>
 
 <template>
   <div class="wrapper">
     <div class="chart-container" ref="chartRef"></div>
     <div class="control">
-      <button @click="goUp">上一级</button>
-      <button @click="goMultiple">混合</button>
+      <button @click="goToUpLevel">上一级</button>
+      <button @click="goToSpecific">混合</button>
     </div>
     <div class="background"></div>
   </div>
