@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { l1, l2, l3, l4 } from "./geo";
-import s from "./series";
+import { pie } from "./series";
 
 const stepsForGeo = ["S0.1", "S0.2", "S1.1"];
 
@@ -77,9 +77,18 @@ const resolveGeo = (action) => {
 };
 
 const resolveSeries = (action) => {
-  const nextSeries = {
-    series: [...s(action)],
-  };
+  const { datasetType } = action;
+
+  let nextSeries = null;
+
+  // 支持一种类型的图表
+  switch (datasetType) {
+    case "pie":
+      nextSeries = { series: [...pie(action)] };
+      break;
+    default:
+      throw new Error(`不支持的图表类型: ${datasetType}`);
+  }
 
   console.log("resolve series", nextSeries);
 
@@ -87,8 +96,19 @@ const resolveSeries = (action) => {
 };
 
 export const resolveNextOption = (action) => {
+  const { dataset } = action;
+
   return {
+    tooltip: {},
+    legend: {},
+    ...(dataset
+      ? {
+          dataset: {
+            source: dataset,
+          },
+        }
+      : {}),
     ...resolveGeo(action),
-    ...resolveSeries(action),
+    ...(dataset ? resolveSeries(action) : {}),
   };
 };
