@@ -26,7 +26,7 @@ export default {
     };
   },
   // 绘制背景/阴影
-  "S1.1": (preOption, { level }) => {
+  "S1.1": (preOption, { level, name }) => {
     switch (level) {
       // 在第二层的时候，绘制湖北省背景
       case 2:
@@ -36,7 +36,7 @@ export default {
           },
           regions: [
             {
-              name: "湖北省",
+              name,
               selected: true,
             },
           ],
