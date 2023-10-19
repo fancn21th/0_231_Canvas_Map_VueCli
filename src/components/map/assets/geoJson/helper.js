@@ -1,78 +1,55 @@
-import { calcBoundingCoords } from "../../utils";
-
-import { getDataMap, getDataNameMap } from "./mapping";
-
-// 本文件是辅助方法, 不直接暴露给外部使用
+import { calcBoundingCoords } from '../../utils';
+import { getDataMap } from './mapping';
 
 // 注册地图
 export const registerMap = (echarts) => {
-  if (!echarts) throw new Error("echarts is required");
+  if (!echarts) throw new Error('echarts is required');
 
   const dataMap = getDataMap();
-
-  // console.log("注册地图", dataMap);
 
   Object.keys(dataMap).forEach((name) => {
     echarts.registerMap(name, dataMap[name]);
   });
 };
 
-// 坐标边界 映射
-export const getCoordsMap = ({ customPropertiesMap = {} }) => {
+// data map 的 派生状态 去掉了 features 补充了 boundingCoords
+export const getCoordsMap = () => {
   const dataMap = getDataMap();
-  const dataNameMap = getDataNameMap();
 
-  // propertiesMap 是算法的辅助数据结构 建立 区域 name 到 properties 的映射
-  const propertiesMap = {
-    ...customPropertiesMap,
-  };
+  const initialCoordsMap = {};
 
-  // 处理边界
+  // 处理 boundingCoords
   let coordsMap = Object.keys(dataMap).reduce((acc, areaName) => {
-    const area = dataMap[areaName];
-    const name = dataNameMap[areaName];
+    const areaData = dataMap[areaName];
     let concatCoords = [];
 
-    area.features.forEach((feature) => {
+    areaData.features.forEach((feature) => {
       const {
-        properties,
         geometry: { coordinates },
       } = feature;
-      propertiesMap[properties.name] = {
-        properties,
-      };
       concatCoords = concatCoords.concat(coordinates);
     });
 
-    // 把 data map 装换成 中文名为 key 的 map
     return {
       ...acc,
-      [name]: {
+      [areaName]: {
         boundingCoords: calcBoundingCoords(concatCoords),
+        properties: areaData.properties,
+        children: areaData.children,
       },
     };
-  }, {});
+  }, initialCoordsMap);
 
-  // 处理 properties
-  coordsMap = Object.keys(coordsMap).reduce((acc, name) => {
-    return {
-      ...acc,
-      [name]: {
-        ...coordsMap[name],
-        ...propertiesMap[name],
-      },
-    };
-  }, {});
-
-  // 处理层级关系
+  // 处理层级关系 依赖于 properties
   const temp = Object.keys(coordsMap).reduce((acc, name) => {
     const coordsItem = coordsMap[name];
-    const adcode = coordsItem?.properties?.adcode || "";
+    const adcode = coordsItem?.properties?.adcode || '';
 
     return {
       ...acc,
       [adcode]: {
         ...coordsItem,
+        // 提升一系列的属性
         name: coordsItem?.properties?.name,
         adcode: coordsItem?.properties?.adcode,
         parent: coordsItem?.properties?.parent?.adcode,
@@ -97,7 +74,7 @@ export const getCoordsMap = ({ customPropertiesMap = {} }) => {
     item.ref.parent = parent?.name;
   });
 
-  console.log("coordsMap", coordsMap);
+  console.log('地图调试数据', 'coordsMap', coordsMap);
 
   return coordsMap;
 };

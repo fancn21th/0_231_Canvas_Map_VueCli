@@ -1,16 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import * as echarts from "echarts";
-import { shallowRef, onMounted, watch, ref } from "vue";
-import { getNameMap, registerMap, getCustomCoordsMap } from "./assets/geoJson";
+import { shallowRef, onMounted, watch } from "vue";
+import { registerMap, getCoordsMap } from "./assets/geoJson";
 import { useOption } from "./hooks/useOption";
 
-registerMap(echarts);
+const coordsMap = getCoordsMap();
 
-const { option, updateOption, goUp, goMultiple } = useOption({
-  coordsMap: getCustomCoordsMap(),
-  nameMap: getNameMap(),
+const { option, updateOption } = useOption({
+  coordsMap,
 });
+
+registerMap(echarts);
 
 // chart 实例
 let chart = null;
@@ -32,78 +33,43 @@ watch(
 
 const chartRef = shallowRef(null);
 
-const history = ref(null);
+const drillDown = (params) => {
+  console.log("地图调试数据", "点击下钻", params);
+
+  // 更新 echarts 地图的 option
+  updateOption({
+    name: params.name || "湖北省",
+  });
+};
 
 onMounted(() => {
   chart = echarts.init(chartRef.value);
 
   // 移动事件
   // chart.on("georoam", function (params) {
-  //   console.log("georoam", params);
+  //   console.log('地图调试数据', "georoam", params);
   // });
 
   // 点击事件
   chart.on("click", function (params) {
-    console.log("点击下钻", params);
-    if (history.value === "混合") {
-      return;
-    }
-
-    updateOption({
-      name: params.name || "湖北省",
-    });
-
-    history.value = params.name;
+    drillDown(params);
   });
 
   // 第一次渲染
   setTimeout(() => {
     updateOption({
       name: "湖北省",
-      dataset: [
-        [
-          "category",
-          "武汉市",
-          "十堰市",
-          "宜昌市",
-          "恩施土家族苗族自治州",
-          "神农架林区",
-        ],
-        ["A", 1, 4, 2, 3, 4],
-        ["B", 3, 2, 2, 5, 1],
-        ["C", 4, 1, 21, 9, 5],
-        ["D", 4, 1, 21, 9, 5],
-      ],
-      datasetType: "pie",
     });
   }, 0);
 });
-
-// 切换到上一级
-
-// 切换到混合区域
-const goToSpecific = () => {
-  console.log("点击下钻到混合");
-  history.value = "混合";
-  goMultiple();
-};
-
-const goToUpLevel = () => {
-  console.log("点击下钻到上一级");
-  history.value = null;
-  goUp();
-};
 </script>
 
 <template>
   <div class="wrapper">
     <div class="chart-container" ref="chartRef"></div>
-    <div class="control">
-      <button @click="goToUpLevel">上一级</button>
-      <button @click="goToSpecific">混合</button>
-    </div>
     <div class="background"></div>
   </div>
+  <div class="control"></div>
 </template>
 
 <style scoped>
@@ -116,6 +82,8 @@ const goToUpLevel = () => {
 
 .wrapper {
   position: relative;
+  width: 132%;
+  left: -32%;
 }
 
 .background {
@@ -123,15 +91,14 @@ const goToUpLevel = () => {
   position: absolute;
   left: 0;
   top: 0;
-  background-image: url("./assets/bg.png");
+  background-image: url("./assets/big-bg.png");
   background-size: cover;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
 .control {
   width: 200px;
   height: 200px;
-  background-color: red;
   position: absolute;
   z-index: 999;
   left: 0;

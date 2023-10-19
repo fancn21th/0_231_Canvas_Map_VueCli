@@ -1,7 +1,7 @@
-import { ref } from "vue";
-import { resolveNextOption } from "../steps";
+import { ref } from 'vue';
+import { resolveNextOption } from '../steps';
 
-export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
+export const useOption = ({ coordsMap = {} }) => {
   const option = ref(null);
   const history = ref(null);
 
@@ -17,16 +17,15 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
         ...action,
         level,
         coordsMap,
-        nameMap,
       };
 
-      console.log("action", nextAction);
+      console.log('地图调试数据', 'action', nextAction);
 
       const nextOption = resolveNextOption(nextAction);
 
       option.value = nextOption;
     } catch (error) {
-      alert("出错了");
+      alert('出错了');
       console.error(error);
     }
   };
@@ -42,7 +41,7 @@ export const useOption = ({ coordsMap = {}, nameMap = {} }) => {
     },
     goMultiple: () => {
       updateOption({
-        name: "混合",
+        name: '混合',
       });
     },
   };
