@@ -82,8 +82,6 @@ onMounted(() => {
 
 .wrapper {
   position: relative;
-  width: 132%;
-  left: -32%;
 }
 
 .background {
@@ -91,9 +89,9 @@ onMounted(() => {
   position: absolute;
   left: 0;
   top: 0;
-  background-image: url("./assets/big-bg.png");
+  background-image: url("./assets/bg.png");
   background-size: cover;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 .control {
