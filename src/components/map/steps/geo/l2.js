@@ -29,6 +29,8 @@ export default {
   },
   // 绘制背景/阴影
   'S1.1': (preOption, { level, name, coordsMap }) => {
+    let children;
+
     switch (level) {
       case 2:
         return {
@@ -43,7 +45,6 @@ export default {
         };
       // 在第三层的时候，绘制相关城市背景
       case 3:
-        let children;
         // TODO: 可以不用写死, 目前方便理解
         if (name === '混合') {
           children = coordsMap['混合']?.children;

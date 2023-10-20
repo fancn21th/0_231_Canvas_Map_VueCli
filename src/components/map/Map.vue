@@ -1,13 +1,13 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import * as echarts from "echarts";
-import { shallowRef, onMounted, watch } from "vue";
-import { registerMap, getCoordsMap } from "./assets/geoJson";
-import { useOption } from "./hooks/useOption";
+import * as echarts from 'echarts';
+import { shallowRef, onMounted, watch } from 'vue';
+import { registerMap, getCoordsMap } from './assets/geoJson';
+import { useOption } from './hooks/useOption';
 
 const coordsMap = getCoordsMap();
 
-const { option, updateOption } = useOption({
+const { option, updateOption, goUp, goMultiple } = useOption({
   coordsMap,
 });
 
@@ -28,17 +28,17 @@ watch(
   {
     deep: true,
     immediate: true,
-  }
+  },
 );
 
 const chartRef = shallowRef(null);
 
 const drillDown = (params) => {
-  console.log("地图调试数据", "点击下钻", params);
+  console.log('地图调试数据', '点击下钻', params);
 
   // 更新 echarts 地图的 option
   updateOption({
-    name: params.name || "湖北省",
+    name: params.name || '湖北省',
   });
 };
 
@@ -51,14 +51,14 @@ onMounted(() => {
   // });
 
   // 点击事件
-  chart.on("click", function (params) {
+  chart.on('click', function (params) {
     drillDown(params);
   });
 
   // 第一次渲染
   setTimeout(() => {
     updateOption({
-      name: "湖北省",
+      name: '湖北省',
     });
   }, 0);
 });
@@ -69,7 +69,10 @@ onMounted(() => {
     <div class="chart-container" ref="chartRef"></div>
     <div class="background"></div>
   </div>
-  <div class="control"></div>
+  <div class="control">
+    <button @click="goUp">Up</button>
+    <button @click="goMultiple">混合</button>
+  </div>
 </template>
 
 <style scoped>
@@ -89,7 +92,7 @@ onMounted(() => {
   position: absolute;
   left: 0;
   top: 0;
-  background-image: url("./assets/bg.png");
+  background-image: url('./assets/bg.png');
   background-size: cover;
   opacity: 0.5;
 }
@@ -105,5 +108,6 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background-color: #efefef;
 }
 </style>
