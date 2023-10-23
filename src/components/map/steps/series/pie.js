@@ -1,6 +1,6 @@
 import zip from 'lodash/zip';
 
-function getPieOption({ center, name, data }) {
+function getOption({ center, name, data }) {
   return {
     type: 'pie',
     coordinateSystem: 'geo',
@@ -41,7 +41,7 @@ export default ({ coordsMap, dataset }) => {
       };
     });
 
-    return getPieOption({ center, name, data });
+    return getOption({ center, name, data });
   });
 
   console.log('地图调试数据', 'pie', pie);

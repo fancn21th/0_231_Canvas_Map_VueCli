@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { l1, l2, l3, l4 } from './geo';
-import { pie } from './series';
+import { pie, scatter } from './series';
 
 const stepsForGeo = ['S0.1', 'S0.2', 'S1.1'];
 
@@ -83,6 +83,9 @@ const resolveSeries = (action) => {
   switch (datasetType) {
     case 'pie':
       nextSeries = { series: [...pie(action)] };
+      break;
+    case 'scatter':
+      nextSeries = { series: [...scatter(action)] };
       break;
     default:
       throw new Error(`不支持的图表类型: ${datasetType}`);
