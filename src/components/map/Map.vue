@@ -55,6 +55,21 @@ onMounted(() => {
     drillDown(params);
   });
 
+  chart.on('finished', function () {
+    const pos = chart.convertToPixel({ geoId: 'S2' }, [114.298572, 30.584355]);
+
+    console.log({
+      pos,
+    });
+
+    // 更新 echarts 地图的 option
+    updateOption({
+      name: '湖北省',
+      // name: params.name || '湖北省',
+      pos,
+    });
+  });
+
   // 第一次渲染
   setTimeout(() => {
     updateOption({

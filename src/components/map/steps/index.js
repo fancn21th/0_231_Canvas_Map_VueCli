@@ -95,7 +95,7 @@ const resolveSeries = (action) => {
 };
 
 export const resolveNextOption = (action) => {
-  const { dataset } = action;
+  const { dataset, pos } = action;
 
   const nextOption = {
     tooltip: {},
@@ -109,6 +109,38 @@ export const resolveNextOption = (action) => {
         }
       : {}),
     ...(dataset ? resolveSeries(action) : {}),
+    ...(pos
+      ? {
+          graphic: [
+            {
+              type: 'rect',
+              shape: {
+                x: pos[0], // 矩形左上角 x 坐标
+                y: pos[1], // 矩形左上角 y 坐标
+                width: 20, // 矩形宽度
+                height: 80, // 矩形高度
+              },
+              style: {
+                fill: 'red', // 矩形填充颜色
+              },
+              zlevel: 100,
+            },
+            {
+              type: 'rect',
+              shape: {
+                x: pos[0] + 25, // 矩形左上角 x 坐标
+                y: pos[1], // 矩形左上角 y 坐标
+                width: 20, // 矩形宽度
+                height: 80, // 矩形高度
+              },
+              style: {
+                fill: 'green', // 矩形填充颜色
+              },
+              zlevel: 100,
+            },
+          ],
+        }
+      : {}),
   };
 
   console.log('地图调试数据', 'resolve next option', nextOption);
