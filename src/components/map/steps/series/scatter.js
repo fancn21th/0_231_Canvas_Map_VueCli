@@ -70,7 +70,17 @@ const resolveOne = (dataset, dataOption) => {
   return option;
 };
 
+const isMultiple = (dataset) => {
+  return Array.isArray(dataset[0]?.[0]);
+};
+
 export default ({ dataset, dataOption }) => {
+  if (isMultiple(dataset)) {
+    const option = dataset.map((item) => {
+      return resolveOne(item, dataOption);
+    });
+    return option;
+  }
   const option = resolveOne(dataset, dataOption);
   return [option];
 };

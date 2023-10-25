@@ -12,6 +12,13 @@ const apiData = [
   ['十堰市', '9', '700.00'],
 ];
 
+const apiData2 = [
+  ['county', '项目数', '总金额'],
+  ['黄冈市', '22', '900.00'],
+  ['荆州市', '24', '700.00'],
+  ['襄阳市', '50', '700.00'],
+];
+
 const formatter = (data) => {
   const res = [];
   // first row
@@ -28,13 +35,15 @@ const formatter = (data) => {
   return res;
 };
 
+const data = [apiData, apiData2].map((item) => formatter(item));
+
 const dataOption = {
   label: '项目数',
 };
 </script>
 
 <template>
-  <Map :data="formatter(apiData)" dataType="scatter" :dataOption="dataOption" />
+  <Map :data="data" dataType="scatter" :dataOption="dataOption" />
 </template>
 
 <style>
