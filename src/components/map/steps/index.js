@@ -136,7 +136,11 @@ export const resolveNextOption = (action) => {
 
   const nextOption = {
     tooltip: {},
-    legend: {},
+    legend: {
+      top: '5%',
+      right: '5%',
+      orient: 'vertical',
+    },
     ...resolveGeo(action),
     ...(dataset
       ? {

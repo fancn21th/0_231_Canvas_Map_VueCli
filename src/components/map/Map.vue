@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 import * as echarts from 'echarts';
-import { shallowRef, onMounted, watch, ref, unref } from 'vue';
+import { shallowRef, onMounted, watch, ref, unref, defineProps } from 'vue';
 import { registerMap, getCoordsMap } from './assets/geoJson';
 import { useOption } from './hooks/useOption';
 

@@ -50,7 +50,7 @@ function getOption({ name, data, dataOption }) {
       ]
  */
 
-const resolveOne = (dataset, dataOption) => {
+saconst resolveOne = (dataset, dataOption, index) => {
   const data = dataset.slice(1).map((row) => {
     const [name, geo, ...rest] = row;
     const obj = rest.reduce((acc, item, index) => {
@@ -66,7 +66,7 @@ const resolveOne = (dataset, dataOption) => {
       value: [...geo, obj],
     };
   });
-  const option = getOption({ data, dataOption });
+  const option = getOption({ name: dataOption.names[index], data, dataOption });
   return option;
 };
 
@@ -76,8 +76,8 @@ const isMultiple = (dataset) => {
 
 export default ({ dataset, dataOption }) => {
   if (isMultiple(dataset)) {
-    const options = dataset.map((item) => {
-      return resolveOne(item, dataOption);
+    const options = dataset.map((item, index) => {
+      return resolveOne(item, dataOption, index);
     });
     return options;
   }

@@ -39,6 +39,7 @@ const data = [apiData, apiData2].map((item) => formatter(item));
 
 const dataOption = {
   label: '项目数',
+  names: ['数据A', '数据B'],
 };
 </script>
 
