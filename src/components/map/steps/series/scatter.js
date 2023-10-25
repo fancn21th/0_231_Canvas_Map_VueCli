@@ -1,5 +1,3 @@
-import zip from 'lodash/zip';
-
 function getOption({ name, data }) {
   return {
     type: 'scatter',
@@ -33,36 +31,46 @@ function getOption({ name, data }) {
   };
 }
 
-export default ({ coordsMap, dataset }) => {
-  // 反转数据
-  const zipDataset = zip(...dataset);
+/**
+  expected:
+      [
+        ['name', 'geo', '项目数', '总金额'],
+        ['宜昌市', ['111.270590', '32.751992'], '16', '900.00'],
+        ['武汉市', ['111.270590', '32.751992'], '13', '700.00'],
+        ['孝感市', ['111.270590', '32.751992'], '12', '720.00'],
+        ['十堰市', ['111.270590', '32.751992'],  '9', '700.00'],
+      ]
 
-  console.log({ zipDataset });
+  converted:
+      [
+        {
+          name: '宜昌市',
+          value: ['111.270590', '32.751992', { '项目数': '16', '总金额': '900.00' }],
+        }
+      ]
+ */
 
-  // 去掉第一列
-  const data = zipDataset[0].slice(1).map((name) => {
-    const area = coordsMap[name];
-    const center = area.properties?.centroid;
-
-    const columnIndex = zipDataset[0].indexOf(name);
-
-    // 去掉第一行
-    const data = zipDataset.slice(1).reduce((acc, item) => {
+const resolveOne = (dataset) => {
+  const data = dataset.slice(1).map((row) => {
+    const [name, geo, ...rest] = row;
+    const obj = rest.reduce((acc, item, index) => {
+      const key = dataset[0][index + 2];
       return {
         ...acc,
-        [item[0]]: item[columnIndex],
+        [key]: item,
       };
     }, {});
 
     return {
       name,
-      value: center.concat([data]),
+      value: [...geo, obj],
     };
   });
-
-  console.log('地图调试数据', 'scatter', data);
-
   const option = getOption({ data });
+  return option;
+};
 
+export default ({ dataset }) => {
+  const option = resolveOne(dataset);
   return [option];
 };

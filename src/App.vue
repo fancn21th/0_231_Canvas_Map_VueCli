@@ -1,9 +1,36 @@
 <script setup>
-import Map from "./components/map/Map.vue";
+import Map from './components/map/Map.vue';
+import { getCoordsMap } from './components/map/assets/geoJson';
+
+const coordsMap = getCoordsMap();
+
+const apiData = [
+  ['county', '项目数', '总金额'],
+  ['宜昌市', '16', '900.00'],
+  ['武汉市', '13', '700.00'],
+  ['孝感市', '12', '720.00'],
+  ['十堰市', '9', '700.00'],
+];
+
+const formatter = (data) => {
+  const res = [];
+  // first row
+  const [firstColumn, ...rest] = data[0];
+  const firstRow = [firstColumn, 'geo', ...rest];
+  res.push(firstRow);
+  // rest row
+  data.slice(1).forEach((item) => {
+    const [firstColumn, ...rest] = item;
+    const area = coordsMap[firstColumn];
+    const center = area.properties?.centroid;
+    res.push([firstColumn, center, ...rest]);
+  });
+  return res;
+};
 </script>
 
 <template>
-  <Map />
+  <Map :data="formatter(apiData)" dataType="scatter" />
 </template>
 
 <style>

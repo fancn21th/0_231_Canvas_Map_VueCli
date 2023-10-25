@@ -1,9 +1,24 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
+// 地图上的 图表数据
+const props = defineProps({
+  // TODO: 理论上数据和类型是可以单独修改 但是目前属于过度设计
+  data: {
+    type: Array,
+    default: null,
+  },
+  dataType: {
+    type: String,
+    default: 'pie',
+  },
+});
+
 import * as echarts from 'echarts';
-import { shallowRef, onMounted, watch } from 'vue';
+import { shallowRef, onMounted, watch, ref, unref } from 'vue';
 import { registerMap, getCoordsMap } from './assets/geoJson';
 import { useOption } from './hooks/useOption';
+
+const actionHistory = ref({});
 
 const coordsMap = getCoordsMap();
 
@@ -13,8 +28,40 @@ const { option, updateOption, goUp, goMultiple } = useOption({
 
 registerMap(echarts);
 
+const call_updateOption = (action) => {
+  const nextAction = {
+    ...actionHistory.value,
+    ...action,
+  };
+
+  updateOption(nextAction);
+
+  // 记住上次的操作 action
+  actionHistory.value = nextAction;
+};
+
 // chart 实例
 let chart = null;
+
+// 监听数据变化
+watch(
+  () => props.data,
+  (data) => {
+    const dataset = unref(data);
+
+    if (!dataset) return;
+
+    call_updateOption({
+      dataset,
+      datasetType: props.dataType,
+    });
+  },
+  {
+    immediate: true,
+    // TODO: 深度监听是否合理??
+    deep: true,
+  },
+);
 
 watch(
   option,
@@ -37,7 +84,7 @@ const drillDown = (params) => {
   console.log('地图调试数据', '点击下钻', params);
 
   // 更新 echarts 地图的 option
-  updateOption({
+  call_updateOption({
     name: params.name || '湖北省',
   });
 };
@@ -57,16 +104,8 @@ onMounted(() => {
 
   // 第一次渲染
   setTimeout(() => {
-    updateOption({
+    call_updateOption({
       name: '湖北省',
-      dataset: [
-        ['county', '项目数', '总金额'],
-        ['宜昌市', '16', '900.00'],
-        ['武汉市', '13', '700.00'],
-        ['孝感市', '12', '720.00'],
-        ['十堰市', '9', '700.00'],
-      ],
-      datasetType: 'scatter',
     });
   }, 0);
 });

@@ -9,6 +9,8 @@ export const useOption = ({ coordsMap = {} }) => {
     try {
       const { name } = action;
 
+      if (!name) return;
+
       history.value = name;
 
       const level = coordsMap[name].level;
@@ -25,7 +27,6 @@ export const useOption = ({ coordsMap = {} }) => {
 
       option.value = nextOption;
     } catch (error) {
-      alert('出错了');
       console.error(error);
     }
   };
