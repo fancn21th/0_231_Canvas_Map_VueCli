@@ -50,7 +50,7 @@ function getOption({ name, data, dataOption }) {
       ]
  */
 
-saconst resolveOne = (dataset, dataOption, index) => {
+const resolveOne = (dataset, dataOption, index) => {
   const data = dataset.slice(1).map((row) => {
     const [name, geo, ...rest] = row;
     const obj = rest.reduce((acc, item, index) => {
