@@ -76,10 +76,10 @@ const isMultiple = (dataset) => {
 
 export default ({ dataset, dataOption }) => {
   if (isMultiple(dataset)) {
-    const option = dataset.map((item) => {
+    const options = dataset.map((item) => {
       return resolveOne(item, dataOption);
     });
-    return option;
+    return options;
   }
   const option = resolveOne(dataset, dataOption);
   return [option];
