@@ -27,10 +27,14 @@ const formatter = (data) => {
   });
   return res;
 };
+
+const dataOption = {
+  label: '项目数',
+};
 </script>
 
 <template>
-  <Map :data="formatter(apiData)" dataType="scatter" />
+  <Map :data="formatter(apiData)" dataType="scatter" :dataOption="dataOption" />
 </template>
 
 <style>

@@ -1,4 +1,4 @@
-function getOption({ name, data }) {
+function getOption({ name, data, dataOption }) {
   return {
     type: 'scatter',
     coordinateSystem: 'geo',
@@ -16,7 +16,7 @@ function getOption({ name, data }) {
     symbolSize: 30,
     label: {
       formatter: ({ value }) => {
-        return value[2]['项目数'];
+        return value[2][dataOption.label];
       },
       position: 'inside',
       show: true,
@@ -50,7 +50,7 @@ function getOption({ name, data }) {
       ]
  */
 
-const resolveOne = (dataset) => {
+const resolveOne = (dataset, dataOption) => {
   const data = dataset.slice(1).map((row) => {
     const [name, geo, ...rest] = row;
     const obj = rest.reduce((acc, item, index) => {
@@ -66,11 +66,11 @@ const resolveOne = (dataset) => {
       value: [...geo, obj],
     };
   });
-  const option = getOption({ data });
+  const option = getOption({ data, dataOption });
   return option;
 };
 
-export default ({ dataset }) => {
-  const option = resolveOne(dataset);
+export default ({ dataset, dataOption }) => {
+  const option = resolveOne(dataset, dataOption);
   return [option];
 };

@@ -11,6 +11,10 @@ const props = defineProps({
     type: String,
     default: 'pie',
   },
+  dataOption: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 
 import * as echarts from 'echarts';
@@ -54,6 +58,7 @@ watch(
     call_updateOption({
       dataset,
       datasetType: props.dataType,
+      dataOption: props.dataOption,
     });
   },
   {
