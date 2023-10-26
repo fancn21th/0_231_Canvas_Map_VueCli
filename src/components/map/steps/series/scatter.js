@@ -1,4 +1,4 @@
-function getOption({ name, data, dataOption }) {
+function getOption({ name, data, option }) {
   return {
     type: 'scatter',
     coordinateSystem: 'geo',
@@ -16,7 +16,7 @@ function getOption({ name, data, dataOption }) {
     symbolSize: 30,
     label: {
       formatter: ({ value }) => {
-        return value[2][dataOption.label];
+        return value[2][option.label];
       },
       position: 'inside',
       show: true,
@@ -50,7 +50,7 @@ function getOption({ name, data, dataOption }) {
       ]
  */
 
-const resolveOne = (dataset, dataOption, index) => {
+const resolveOne = (dataset, name, option) => {
   const data = dataset.slice(1).map((row) => {
     const [name, geo, ...rest] = row;
     const obj = rest.reduce((acc, item, index) => {
@@ -66,21 +66,23 @@ const resolveOne = (dataset, dataOption, index) => {
       value: [...geo, obj],
     };
   });
-  const option = getOption({ name: dataOption.names[index], data, dataOption });
-  return option;
+  const options = getOption({ name, data, option });
+  return options;
 };
 
 const isMultiple = (dataset) => {
   return Array.isArray(dataset[0]?.[0]);
 };
 
-export default ({ dataset, dataOption }) => {
-  if (isMultiple(dataset)) {
-    const options = dataset.map((item, index) => {
-      return resolveOne(item, dataOption, index);
+export default ({ option }) => {
+  const { data, series } = option;
+  if (isMultiple(data)) {
+    const options = data.map((item, index) => {
+      const name = series[index] || `无名${index}`;
+      return resolveOne(item, name, option);
     });
     return options;
   }
-  const option = resolveOne(dataset, dataOption);
-  return [option];
+  const options = resolveOne(data, series[0], option);
+  return [options];
 };

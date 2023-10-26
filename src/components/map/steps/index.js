@@ -113,43 +113,43 @@ const resolveGeo = (action) => {
  *
  */
 const resolveSeries = (action) => {
-  const { datasetType } = action;
+  const {
+    option: { type },
+  } = action;
 
   let nextSeries = null;
 
-  switch (datasetType) {
-    case 'pie':
-      nextSeries = { series: [...pie(action)] };
-      break;
+  switch (type) {
+    // case 'pie':
+    //   nextSeries = { series: [...pie(action)] };
+    //   break;
     case 'scatter':
       nextSeries = { series: [...scatter(action)] };
       break;
     default:
-      throw new Error(`不支持的图表类型: ${datasetType}`);
+      throw new Error(`不支持的图表类型: ${type}`);
   }
 
   return nextSeries;
 };
 
 export const resolveNextOption = (action) => {
-  const { dataset } = action;
+  const {
+    option: { data },
+  } = action;
 
   const nextOption = {
     tooltip: {},
-    legend: {
-      top: '5%',
-      right: '5%',
-      orient: 'vertical',
-    },
+    ...(action.legend ? { legend: action.legend } : {}),
     ...resolveGeo(action),
-    ...(dataset
+    ...(data
       ? {
           dataset: {
-            source: dataset,
+            source: data,
           },
         }
       : {}),
-    ...(dataset ? resolveSeries(action) : {}),
+    ...(data ? resolveSeries(action) : {}),
   };
 
   console.log('地图调试数据', 'resolve next option', nextOption);

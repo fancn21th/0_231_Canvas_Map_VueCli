@@ -37,14 +37,21 @@ const formatter = (data) => {
 
 const data = [apiData, apiData2].map((item) => formatter(item));
 
-const dataOption = {
+const option = {
+  data,
+  legend: {
+    top: '5%',
+    right: '5%',
+    orient: 'vertical',
+  },
+  series: ['数据A', '数据B'],
+  type: 'scatter',
   label: '项目数',
-  names: ['数据A', '数据B'],
 };
 </script>
 
 <template>
-  <Map :data="data" dataType="scatter" :dataOption="dataOption" />
+  <Map :option="option" />
 </template>
 
 <style>

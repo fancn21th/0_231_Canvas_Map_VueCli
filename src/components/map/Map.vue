@@ -3,17 +3,9 @@
 // 地图上的 图表数据
 const props = defineProps({
   // TODO: 理论上数据和类型是可以单独修改 但是目前属于过度设计
-  data: {
-    type: Array,
-    default: null,
-  },
-  dataType: {
-    type: String,
-    default: 'pie',
-  },
-  dataOption: {
+  option: {
     type: Object,
-    default: () => ({}),
+    default: null,
   },
 });
 
@@ -49,16 +41,19 @@ let chart = null;
 
 // 监听数据变化
 watch(
-  () => props.data,
-  (data) => {
-    const dataset = unref(data);
+  () => props.option,
+  (option) => {
+    const { data } = option || {};
 
-    if (!dataset) return;
+    const unrefData = unref(data);
+
+    if (!unrefData) return;
 
     call_updateOption({
-      dataset,
-      datasetType: props.dataType,
-      dataOption: props.dataOption,
+      option: {
+        ...option,
+        data: unrefData,
+      },
     });
   },
   {
