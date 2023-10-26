@@ -134,13 +134,12 @@ const resolveSeries = (action) => {
 };
 
 export const resolveNextOption = (action) => {
-  const {
-    option: { data },
-  } = action;
+  const option = action.option || null;
+  const data = option?.data || null;
 
   const nextOption = {
     tooltip: {},
-    ...(action.legend ? { legend: action.legend } : {}),
+    ...(option?.legend ? { legend: option.legend } : {}),
     ...resolveGeo(action),
     ...(data
       ? {
