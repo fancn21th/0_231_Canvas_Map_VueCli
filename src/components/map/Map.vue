@@ -10,9 +10,13 @@ const props = defineProps({
 });
 
 import * as echarts from 'echarts';
+// 可以根据需要选用只用到的渲染器
+import { SVGRenderer, CanvasRenderer } from 'echarts/renderers';
 import { shallowRef, onMounted, watch, ref, unref, defineProps } from 'vue';
 import { registerMap, getCoordsMap } from './assets/geoJson';
 import { useOption } from './hooks/useOption';
+
+echarts.use([SVGRenderer, CanvasRenderer]);
 
 const actionHistory = ref({});
 
@@ -90,7 +94,8 @@ const drillDown = (params) => {
 };
 
 onMounted(() => {
-  chart = echarts.init(chartRef.value);
+  chart = echarts.init(chartRef.value, null, { renderer: 'canvas' });
+  // chart = echarts.init(chartRef.value, null, { renderer: 'svg' });
 
   // 移动事件
   // chart.on("georoam", function (params) {
