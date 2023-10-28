@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-vars */
+import config from '../../../../configs/layerConfig';
+const { designHeight } = config;
 
 import bgImg from '../../assets/bg.png';
 
@@ -16,7 +18,6 @@ export default {
           show: true,
         },
       },
-      zoom: 0.85,
     };
   },
   // 地图层级
@@ -24,6 +25,8 @@ export default {
     return {
       map: level === 4 ? name : '湖北省',
       boundingCoords: coordsMap[name].boundingCoords,
+      layoutCenter: ['31.25%', '50%'],
+      layoutSize: designHeight,
     };
   },
   // 绘制背景/阴影

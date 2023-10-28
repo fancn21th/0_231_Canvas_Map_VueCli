@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-
+import config from '../../../../configs/layerConfig';
+const { designHeight } = config;
 import bgImg from '../../assets/bg.png';
 
 // 倒数第二层的地图
@@ -17,7 +18,6 @@ export default {
           show: true,
         },
       },
-      zoom: 0.85,
     };
   },
   // 地图层级
@@ -25,6 +25,8 @@ export default {
     return {
       map: name === '混合' ? '湖北省2' : '湖北省',
       boundingCoords: coordsMap[name].boundingCoords,
+      layoutCenter: ['31.25%', '50%'],
+      layoutSize: designHeight,
     };
   },
   // 绘制背景/阴影

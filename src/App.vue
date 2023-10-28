@@ -1,6 +1,21 @@
 <script setup>
 import Map from './components/map/Map.vue';
+import { onBeforeMount } from 'vue';
+import config from './configs/layerConfig';
+const { designWidthPx, designHeightPx, designWidth, designHeight } = config;
 import { getCoordsMap } from './components/map/assets/geoJson';
+
+onBeforeMount(() => {
+  const scale =
+    document.documentElement.clientWidth / document.documentElement.clientHeight < designWidth / designHeight
+      ? document.documentElement.clientWidth / designWidth
+      : document.documentElement.clientHeight / designHeight;
+
+  // refer to https://stackoverflow.com/questions/76090183/using-v-bind-to-set-css-vars-in-vue-3-composition-issue
+  document.documentElement.style.setProperty('--design-width', designWidthPx);
+  document.documentElement.style.setProperty('--design-height', designHeightPx);
+  document.documentElement.style.setProperty('--scale', scale);
+});
 
 const coordsMap = getCoordsMap();
 
@@ -66,5 +81,13 @@ body,
 #app {
   width: 100%;
   height: 100%;
+}
+
+#app {
+  position: relative;
+  width: var(--design-width);
+  height: var(--design-height);
+  transform: scale(var(--scale));
+  transform-origin: left top;
 }
 </style>

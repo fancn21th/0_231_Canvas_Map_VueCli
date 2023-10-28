@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import bgImg from '../../assets/bg.png';
+import config from '../../../../configs/layerConfig';
+const { designHeight } = config;
 
 // 最底层的地图
 export default {
@@ -16,7 +17,8 @@ export default {
           show: true,
         },
       },
-      zoom: 0.85,
+      layoutCenter: ['31.25%', '50%'],
+      layoutSize: 1080,
     };
   },
   // 地图层级
@@ -24,6 +26,8 @@ export default {
     return {
       map: '中国',
       boundingCoords: coordsMap[name].boundingCoords,
+      layoutCenter: ['31.25%', '50%'],
+      layoutSize: designHeight,
     };
   },
   // 绘制背景/阴影
