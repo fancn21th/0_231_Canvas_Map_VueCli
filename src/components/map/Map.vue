@@ -2,7 +2,6 @@
 <script setup>
 // 地图上的 图表数据
 const props = defineProps({
-  // TODO: 理论上数据和类型是可以单独修改 但是目前属于过度设计
   option: {
     type: Object,
     default: null,
