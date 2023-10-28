@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "echarts": "5.4.3",
+    "gsap": "3.12.2",
     "lodash": "4.17.21",
     "vue": "^3.2.13"
   },
