@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { layoutSize, layoutCenter } from '../../../../configs/mapConfig';
+import { layoutSize, layoutCenter, offsetLayoutCenter } from '../../../../configs/mapConfig';
 import bgImg from '../../assets/bg.png';
 
 // TODO: 待提取
@@ -30,10 +30,11 @@ export default {
   // 地图层级
   'S0.2': (preOption, { coordsMap, name, level }) => {
     const resolvedName = level === 4 ? coordsMap[name].parent : name;
+    const resolvedLayoutCenter = level === 4 ? offsetLayoutCenter : layoutCenter;
     return {
       map: resolvedName,
       boundingCoords: coordsMap[name].boundingCoords,
-      layoutCenter,
+      layoutCenter: resolvedLayoutCenter,
       layoutSize,
     };
   },

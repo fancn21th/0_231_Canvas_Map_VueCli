@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { layoutSize, layoutCenter } from '../../../../configs/mapConfig';
+import { layoutSize, layoutCenter, offsetLayoutCenter } from '../../../../configs/mapConfig';
 
 // 最底层的地图
 export default {
@@ -19,11 +19,12 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (preOption, { coordsMap, name }) => {
+  'S0.2': (preOption, { coordsMap, name, level }) => {
+    const resolvedLayoutCenter = level === 2 ? offsetLayoutCenter : layoutCenter;
     return {
       map: '中国',
       boundingCoords: coordsMap[name].boundingCoords,
-      layoutCenter,
+      layoutCenter: resolvedLayoutCenter,
       layoutSize,
     };
   },

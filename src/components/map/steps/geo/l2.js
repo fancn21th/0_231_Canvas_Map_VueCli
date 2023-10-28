@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { layoutSize, layoutCenter } from '../../../../configs/mapConfig';
+import { layoutSize, layoutCenter, offsetLayoutCenter } from '../../../../configs/mapConfig';
 import bgImg from '../../assets/bg.png';
 
 // 倒数第二层的地图
@@ -20,11 +20,12 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (preOption, { coordsMap, name }) => {
+  'S0.2': (preOption, { coordsMap, name, level }) => {
+    const resolvedLayoutCenter = level === 3 ? offsetLayoutCenter : layoutCenter;
     return {
       map: name === '混合' ? '湖北省2' : '湖北省',
       boundingCoords: coordsMap[name].boundingCoords,
-      layoutCenter,
+      layoutCenter: resolvedLayoutCenter,
       layoutSize,
     };
   },
