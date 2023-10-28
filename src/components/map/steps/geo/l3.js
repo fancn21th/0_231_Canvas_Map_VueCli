@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
-import config from '../../../../configs/layerConfig';
-const { designHeight } = config;
-
+import { layoutSize, layoutCenter } from '../../../../configs/mapConfig';
 import bgImg from '../../assets/bg.png';
 
 // TODO: 待提取
@@ -35,8 +33,8 @@ export default {
     return {
       map: resolvedName,
       boundingCoords: coordsMap[name].boundingCoords,
-      layoutCenter: ['31.25%', '50%'],
-      layoutSize: designHeight,
+      layoutCenter,
+      layoutSize,
     };
   },
   // 绘制背景/阴影

@@ -1,8 +1,7 @@
 <script setup>
 import Map from './components/map/Map.vue';
 import { onBeforeMount } from 'vue';
-import config from './configs/layerConfig';
-const { designWidthPx, designHeightPx, designWidth, designHeight } = config;
+import { designWidthPx, designHeightPx, designWidth, designHeight } from './configs/layerConfig';
 import { getCoordsMap } from './components/map/assets/geoJson';
 
 onBeforeMount(() => {
