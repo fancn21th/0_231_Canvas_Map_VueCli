@@ -19,8 +19,8 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (preOption, { coordsMap, name, level, offsetLayoutCenter, layoutCenter, layoutSize }) => {
-    const resolvedLayoutCenter = level === 3 ? offsetLayoutCenter : layoutCenter;
+  'S0.2': (preOption, { coordsMap, name, level, layoutTargetOffsetCenter, layoutTargetCenter, layoutSize }) => {
+    const resolvedLayoutCenter = level === 3 ? layoutTargetOffsetCenter : layoutTargetCenter;
     return {
       map: name === '混合' ? '湖北省2' : '湖北省',
       boundingCoords: coordsMap[name].boundingCoords,

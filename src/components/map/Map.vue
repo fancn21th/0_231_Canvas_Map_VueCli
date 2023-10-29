@@ -12,7 +12,7 @@ import * as echarts from 'echarts';
 // 可以根据需要选用只用到的渲染器
 import { SVGRenderer, CanvasRenderer } from 'echarts/renderers';
 import gasp from 'gsap';
-import { layoutCenterObject } from '../../configs/mapConfig';
+import { layoutOriginCenterObject, layoutTargetOffsetObject } from '../../configs/mapConfig';
 import { shallowRef, onMounted, watch, unref, defineProps } from 'vue';
 import { registerMap, getCoordsMap } from './assets/geoJson';
 import { useOption } from './hooks/useOption';
@@ -85,14 +85,15 @@ const drillDown = (params) => {
 
 // 地图动画
 const startAnimation = () => {
-  gasp.from(layoutCenterObject, {
-    duration: 1000,
-    ease: 'power4.out',
-    x: '31.25%',
+  gasp.to(layoutOriginCenterObject, {
+    duration: 2.5,
+    ease: 'power1.out',
+    x: layoutTargetOffsetObject.x,
+    y: layoutTargetOffsetObject.y,
     onUpdate: () =>
       updateOption({
         animation: {
-          layoutCenterObject,
+          layoutCenter: [layoutOriginCenterObject.x, layoutOriginCenterObject.y],
         },
       }),
   });
@@ -116,7 +117,7 @@ onMounted(() => {
     name: '湖北省',
   });
 
-  // startAnimation();
+  startAnimation();
 });
 </script>
 

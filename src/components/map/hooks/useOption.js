@@ -1,6 +1,11 @@
 import { ref } from 'vue';
 import { resolveNextOption } from '../steps';
-import { layoutSize, layoutCenter, offsetLayoutCenter } from '../../../configs/mapConfig';
+import {
+  layoutSize,
+  layoutOriginCenter,
+  layoutTargetCenter,
+  layoutTargetOffsetCenter,
+} from '../../../configs/mapConfig';
 
 export const useOption = ({ coordsMap = {} }) => {
   const option = ref(null);
@@ -27,7 +32,7 @@ export const useOption = ({ coordsMap = {} }) => {
       const level = coordsMap[name].level;
 
       // 附加的 配置数据
-      const extra = { level, coordsMap, layoutSize, layoutCenter, offsetLayoutCenter };
+      const extra = { level, coordsMap, layoutSize, layoutOriginCenter, layoutTargetCenter, layoutTargetOffsetCenter };
 
       const nextActionWithMeta = {
         ...nextAction,
