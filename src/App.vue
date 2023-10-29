@@ -1,7 +1,7 @@
 <script setup>
 import Stats from 'stats.js';
 import Foo from './components/foo/Foo.vue';
-import { onMounted, onBeforeMount, shallowRef, provide } from 'vue';
+import { onMounted, onBeforeMount, shallowRef } from 'vue';
 import { designWidthPx, designHeightPx, designWidth, designHeight } from './configs/layerConfig';
 
 onBeforeMount(() => {
@@ -17,29 +17,16 @@ onBeforeMount(() => {
 });
 
 const monitorRef = shallowRef(null);
-const stats = new Stats();
-
-provide('monitor', {
-  animate,
-  startAnimation: () => {
-    requestAnimationFrame(animate);
-  },
-});
-
-function animate(render) {
-  stats.begin();
-
-  // monitored code goes here
-  render();
-
-  stats.end();
-
-  requestAnimationFrame(animate);
-}
 
 onMounted(() => {
+  const stats = new Stats();
   stats.showPanel(1); // 0: fps, 1: ms, 2: mb, 3+: custom
   monitorRef.value.appendChild(stats.dom);
+
+  requestAnimationFrame(function loop() {
+    stats.update();
+    requestAnimationFrame(loop);
+  });
 });
 </script>
 
