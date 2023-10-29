@@ -12,7 +12,7 @@ const shadowStyle = {
 // 第三层的地图
 export default {
   // 基础配置
-  'S0.1': (preOption, { name, level, coordsMap }) => {
+  'S0.1': (preOption, { name, level }) => {
     return {
       show: level >= 3,
       silent: level > 3,
@@ -27,21 +27,16 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (
-    preOption,
-    { boundingCoords, coordsMap, name, level, layoutTargetOffsetCenter, layoutTargetCenter, layoutSize },
-  ) => {
-    const resolvedName = level === 4 ? coordsMap[name].parent : name;
-    const resolvedLayoutCenter = level === 4 ? layoutTargetOffsetCenter : layoutTargetCenter;
+  'S0.2': (preOption, { boundingCoords, parent, name, level, layoutOriginCenter, animation, layoutSize }) => {
     return {
-      map: resolvedName,
+      map: level === 4 ? parent : name,
       boundingCoords,
-      layoutCenter: resolvedLayoutCenter,
+      layoutCenter: animation?.layoutCenter || layoutOriginCenter,
       layoutSize,
     };
   },
   // 绘制背景/阴影
-  'S1.1': (preOption, { level, name, selectedName, coordsMap }) => {
+  'S1.1': (preOption, { level, name, selectedName }) => {
     switch (level) {
       case 3:
         return {

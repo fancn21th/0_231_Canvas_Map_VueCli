@@ -29,10 +29,19 @@ export const useOption = ({ coordsMap = {} }) => {
 
       nameHistory.value = name;
 
+      let children = null;
+
+      // TODO: 可以不用写死, 目前方便理解
+      if (name === '混合') {
+        children = coordsMap['混合']?.children;
+      }
+
       // 附加的 配置数据
       const extra = {
-        level: coordsMap[name].level, //
-        coordsMap,
+        parent: coordsMap[name]?.parent,
+        children,
+        level: coordsMap[name].level,
+        // coordsMap,
         layoutSize,
         layoutOriginCenter,
         layoutTargetCenter,
