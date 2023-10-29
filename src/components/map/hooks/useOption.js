@@ -9,7 +9,7 @@ import {
 
 export const useOption = ({ coordsMap = {} }) => {
   const option = ref(null);
-  const nameHistory = ref(null); // name 历史记录
+  const lastName = ref(null); // name 历史记录
   const actionHistory = ref({}); // action 历史记录
 
   const updateOption = (action) => {
@@ -27,8 +27,12 @@ export const useOption = ({ coordsMap = {} }) => {
 
       if (!name) return; // 没有名字的 action 不更新
 
-      nameHistory.value = name;
+      lastName.value = name;
 
+      // boundingCoords
+      const { boundingCoords } = action;
+
+      // children
       let children = null;
 
       // TODO: 可以不用写死, 目前方便理解
@@ -46,7 +50,7 @@ export const useOption = ({ coordsMap = {} }) => {
         layoutOriginCenter,
         layoutTargetCenter,
         layoutTargetOffsetCenter,
-        boundingCoords: coordsMap[name].boundingCoords,
+        boundingCoords: boundingCoords ? boundingCoords : coordsMap[name].boundingCoords,
       };
 
       const nextActionWithMeta = {
@@ -66,9 +70,10 @@ export const useOption = ({ coordsMap = {} }) => {
 
   return {
     option,
+    lastName,
     updateOption,
     goUp: () => {
-      const parent = coordsMap[nameHistory.value].parent;
+      const parent = coordsMap[lastName.value].parent;
       updateOption({
         name: parent,
       });

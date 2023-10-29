@@ -12,7 +12,6 @@ import * as echarts from 'echarts';
 // 可以根据需要选用只用到的渲染器
 import { SVGRenderer, CanvasRenderer } from 'echarts/renderers';
 import gasp from 'gsap';
-import { layoutOriginCenterObject, layoutTargetOffsetObject } from '../../configs/mapConfig';
 import { shallowRef, onMounted, watch, unref, defineProps } from 'vue';
 import { registerMap, getCoordsMap } from './assets/geoJson';
 import { useOption } from './hooks/useOption';
@@ -28,9 +27,59 @@ const chartRef = shallowRef(null);
 // 坐标元数据
 const coordsMap = getCoordsMap();
 // hook
-const { option, updateOption, goUp, goMultiple } = useOption({
+const { option, updateOption, goUp, goMultiple, lastName } = useOption({
   coordsMap,
 });
+
+// 地图动画
+const startAnimation = (last, next) => {
+  const lastBoundingCoords = coordsMap[last]?.boundingCoords;
+  const nextBoundingCoords = coordsMap[next]?.boundingCoords;
+
+  console.log({
+    lastBoundingCoords,
+    nextBoundingCoords,
+  });
+
+  const origin = {
+    x1: lastBoundingCoords[0][0],
+    y1: lastBoundingCoords[0][1],
+    x2: lastBoundingCoords[1][0],
+    y2: lastBoundingCoords[1][1],
+  };
+
+  gasp.to(origin, {
+    duration: 2.5,
+    // repeat: -1,
+    // yoyo: true,
+    ease: 'power1.out',
+    x1: nextBoundingCoords[0][0],
+    y1: nextBoundingCoords[0][1],
+    x2: nextBoundingCoords[1][0],
+    y2: nextBoundingCoords[1][1],
+    onUpdate: () => {
+      updateOption({
+        boundingCoords: [
+          [origin.x1, origin.y1],
+          [origin.x2, origin.y2],
+        ],
+      });
+    },
+  });
+};
+
+// 统一调用 updateOption
+const call_updateOption = (params) => {
+  const last = lastName.value;
+  const next = params?.name || '';
+
+  if (last && last !== next) {
+    startAnimation(last, next);
+    return;
+  }
+
+  updateOption(params);
+};
 
 // 监听数据变化
 watch(
@@ -40,9 +89,7 @@ watch(
 
     const unrefData = unref(data);
 
-    if (!unrefData) return;
-
-    updateOption({
+    call_updateOption({
       option: {
         ...option,
         data: unrefData,
@@ -78,24 +125,8 @@ const drillDown = (params) => {
   // console.log('地图调试数据', '点击下钻', params);
 
   // 更新 echarts 地图的 option
-  updateOption({
+  call_updateOption({
     name: params.name || '湖北省',
-  });
-};
-
-// 地图动画
-const startAnimation = () => {
-  gasp.to(layoutOriginCenterObject, {
-    duration: 2.5,
-    ease: 'power1.out',
-    x: layoutTargetOffsetObject.x,
-    y: layoutTargetOffsetObject.y,
-    onUpdate: () =>
-      updateOption({
-        animation: {
-          layoutCenter: [layoutOriginCenterObject.x, layoutOriginCenterObject.y],
-        },
-      }),
   });
 };
 
@@ -113,11 +144,9 @@ onMounted(() => {
     drillDown(params);
   });
 
-  updateOption({
+  call_updateOption({
     name: '湖北省',
   });
-
-  startAnimation();
 });
 </script>
 
