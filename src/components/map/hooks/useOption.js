@@ -29,10 +29,16 @@ export const useOption = ({ coordsMap = {} }) => {
 
       nameHistory.value = name;
 
-      const level = coordsMap[name].level;
-
       // 附加的 配置数据
-      const extra = { level, coordsMap, layoutSize, layoutOriginCenter, layoutTargetCenter, layoutTargetOffsetCenter };
+      const extra = {
+        level: coordsMap[name].level, //
+        coordsMap,
+        layoutSize,
+        layoutOriginCenter,
+        layoutTargetCenter,
+        layoutTargetOffsetCenter,
+        boundingCoords: coordsMap[name].boundingCoords,
+      };
 
       const nextActionWithMeta = {
         ...nextAction,

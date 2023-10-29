@@ -27,12 +27,15 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (preOption, { coordsMap, name, level, layoutTargetOffsetCenter, layoutTargetCenter, layoutSize }) => {
+  'S0.2': (
+    preOption,
+    { boundingCoords, coordsMap, name, level, layoutTargetOffsetCenter, layoutTargetCenter, layoutSize },
+  ) => {
     const resolvedName = level === 4 ? coordsMap[name].parent : name;
     const resolvedLayoutCenter = level === 4 ? layoutTargetOffsetCenter : layoutTargetCenter;
     return {
       map: resolvedName,
-      boundingCoords: coordsMap[name].boundingCoords,
+      boundingCoords,
       layoutCenter: resolvedLayoutCenter,
       layoutSize,
     };

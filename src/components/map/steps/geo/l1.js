@@ -18,11 +18,11 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (preOption, { coordsMap, name, animation: { layoutCenter }, layoutSize, layoutOriginCenter }) => {
+  'S0.2': (preOption, { boundingCoords, name, animation, layoutSize, layoutOriginCenter }) => {
     return {
       map: '中国',
-      boundingCoords: coordsMap[name].boundingCoords,
-      layoutCenter: layoutCenter || layoutOriginCenter,
+      boundingCoords,
+      layoutCenter: animation?.layoutCenter || layoutOriginCenter,
       layoutSize,
     };
   },

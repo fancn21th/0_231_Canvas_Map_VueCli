@@ -18,10 +18,10 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (preOption, { coordsMap, name, level, layoutTargetCenter, layoutSize }) => {
+  'S0.2': (preOption, { boundingCoords, name, level, layoutTargetCenter, layoutSize }) => {
     return {
       map: level === 4 ? name : '湖北省',
-      boundingCoords: coordsMap[name].boundingCoords,
+      boundingCoords,
       layoutCenter: layoutTargetCenter,
       layoutSize,
     };
