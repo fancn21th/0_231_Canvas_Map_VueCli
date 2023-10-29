@@ -1,4 +1,4 @@
-<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable no-unused-vars vue/multi-word-component-names -->
 <script setup>
 // 地图上的 图表数据
 const props = defineProps({
@@ -11,36 +11,26 @@ const props = defineProps({
 import * as echarts from 'echarts';
 // 可以根据需要选用只用到的渲染器
 import { SVGRenderer, CanvasRenderer } from 'echarts/renderers';
-import { shallowRef, onMounted, watch, ref, unref, defineProps } from 'vue';
+import gasp from 'gsap';
+import { layoutCenterObject } from '../../configs/mapConfig';
+import { shallowRef, onMounted, watch, unref, defineProps } from 'vue';
 import { registerMap, getCoordsMap } from './assets/geoJson';
 import { useOption } from './hooks/useOption';
 
 echarts.use([SVGRenderer, CanvasRenderer]);
-
-const actionHistory = ref({});
-
-const coordsMap = getCoordsMap();
-
-const { option, updateOption, goUp, goMultiple } = useOption({
-  coordsMap,
-});
-
+// 注册地图
 registerMap(echarts);
-
-const call_updateOption = (action) => {
-  const nextAction = {
-    ...actionHistory.value,
-    ...action,
-  };
-
-  updateOption(nextAction);
-
-  // 记住上次的操作 action
-  actionHistory.value = nextAction;
-};
 
 // chart 实例
 let chart = null;
+// chart ref
+const chartRef = shallowRef(null);
+// 坐标元数据
+const coordsMap = getCoordsMap();
+// hook
+const { option, updateOption, goUp, goMultiple } = useOption({
+  coordsMap,
+});
 
 // 监听数据变化
 watch(
@@ -52,7 +42,7 @@ watch(
 
     if (!unrefData) return;
 
-    call_updateOption({
+    updateOption({
       option: {
         ...option,
         data: unrefData,
@@ -66,13 +56,16 @@ watch(
   },
 );
 
+// 监听 echarts option 变化
 watch(
   option,
   () => {
     if (option?.value) {
       // TODO: 更新策略
       // https://echarts.apache.org/zh/api.html#echartsInstance.setOption
-      chart.setOption(option.value, true);
+      setTimeout(() => {
+        chart.setOption(option.value, true);
+      }, 0);
     }
   },
   {
@@ -81,14 +74,27 @@ watch(
   },
 );
 
-const chartRef = shallowRef(null);
-
 const drillDown = (params) => {
-  console.log('地图调试数据', '点击下钻', params);
+  // console.log('地图调试数据', '点击下钻', params);
 
   // 更新 echarts 地图的 option
-  call_updateOption({
+  updateOption({
     name: params.name || '湖北省',
+  });
+};
+
+// 地图动画
+const startAnimation = () => {
+  gasp.from(layoutCenterObject, {
+    duration: 1000,
+    ease: 'power4.out',
+    x: '31.25%',
+    onUpdate: () =>
+      updateOption({
+        animation: {
+          layoutCenterObject,
+        },
+      }),
   });
 };
 
@@ -106,12 +112,11 @@ onMounted(() => {
     drillDown(params);
   });
 
-  // 第一次渲染
-  setTimeout(() => {
-    call_updateOption({
-      name: '湖北省',
-    });
-  }, 0);
+  updateOption({
+    name: '湖北省',
+  });
+
+  // startAnimation();
 });
 </script>
 

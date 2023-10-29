@@ -1,29 +1,42 @@
 import { ref } from 'vue';
 import { resolveNextOption } from '../steps';
+import { layoutSize, layoutCenter, offsetLayoutCenter } from '../../../configs/mapConfig';
 
 export const useOption = ({ coordsMap = {} }) => {
   const option = ref(null);
-  const history = ref(null);
+  const nameHistory = ref(null); // name 历史记录
+  const actionHistory = ref({}); // action 历史记录
 
   const updateOption = (action) => {
     try {
-      const { name } = action;
+      // 混合上次的操作 action
+      const nextAction = {
+        ...actionHistory.value,
+        ...action,
+      };
 
-      if (!name) return;
+      const { name } = nextAction;
 
-      history.value = name;
+      // 记住上次的操作 action
+      actionHistory.value = nextAction;
+
+      if (!name) return; // 没有名字的 action 不更新
+
+      nameHistory.value = name;
 
       const level = coordsMap[name].level;
 
-      const nextAction = {
-        ...action,
-        level,
-        coordsMap,
+      // 附加的 配置数据
+      const extra = { level, coordsMap, layoutSize, layoutCenter, offsetLayoutCenter };
+
+      const nextActionWithMeta = {
+        ...nextAction,
+        ...extra,
       };
 
-      console.log('地图调试数据', 'action', nextAction);
+      console.log('地图调试数据', '--action--', action, nextAction, nextActionWithMeta);
 
-      const nextOption = resolveNextOption(nextAction);
+      const nextOption = resolveNextOption(nextActionWithMeta);
 
       option.value = nextOption;
     } catch (error) {
@@ -35,7 +48,7 @@ export const useOption = ({ coordsMap = {} }) => {
     option,
     updateOption,
     goUp: () => {
-      const parent = coordsMap[history.value].parent;
+      const parent = coordsMap[nameHistory.value].parent;
       updateOption({
         name: parent,
       });

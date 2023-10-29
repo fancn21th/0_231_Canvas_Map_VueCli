@@ -74,7 +74,7 @@ export const getCoordsMap = () => {
     item.ref.parent = parent?.name;
   });
 
-  console.log('地图调试数据', 'coordsMap', coordsMap);
+  // console.log('地图调试数据', 'coordsMap', coordsMap);
 
   return coordsMap;
 };

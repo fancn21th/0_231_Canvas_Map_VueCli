@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { layoutSize, layoutCenter } from '../../../../configs/mapConfig';
-
 import bgImg from '../../assets/bg.png';
 
 // 最顶层的地图
@@ -20,7 +18,7 @@ export default {
     };
   },
   // 地图层级
-  'S0.2': (preOption, { coordsMap, name, level }) => {
+  'S0.2': (preOption, { coordsMap, name, level, layoutCenter, layoutSize }) => {
     return {
       map: level === 4 ? name : '湖北省',
       boundingCoords: coordsMap[name].boundingCoords,

@@ -63,6 +63,6 @@ dataMap['湖北省2'] = mixed(['湖北省', '秭归县', '长阳县', '巴东县
 });
 
 export const getDataMap = () => {
-  console.log('地图调试数据', 'data map', dataMap);
+  // console.log('地图调试数据', 'data map', dataMap);
   return dataMap;
 };
