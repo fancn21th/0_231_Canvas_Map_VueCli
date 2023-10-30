@@ -58,7 +58,10 @@ const startAnimation = (last, next) => {
     x2: nextBoundingCoords[1][0],
     y2: nextBoundingCoords[1][1],
     onUpdate: () => {
+      const dx = Math.abs(origin.x1 - nextBoundingCoords[0][0]);
+
       updateOption({
+        ...(dx < 0.1 ? { name: next } : {}),
         boundingCoords: [
           [origin.x1, origin.y1],
           [origin.x2, origin.y2],
