@@ -6,18 +6,19 @@ import { getCoordsMap } from '../map/assets/geoJson';
 const coordsMap = getCoordsMap();
 
 const apiData = [
-  ['county', '项目数', '总金额'],
-  ['宜昌市', '16', '900.00'],
-  ['武汉市', '13', '700.00'],
-  ['孝感市', '12', '720.00'],
-  ['十堰市', '9', '700.00'],
+  ['county', '项目数'],
+  ['宜昌市', '10'],
+  ['武汉市', '20'],
+  ['黄石市', '30'],
+  ['荆门市', '40'],
 ];
 
 const apiData2 = [
-  ['county', '项目数', '总金额'],
-  ['黄冈市', '22', '900.00'],
-  ['荆州市', '24', '700.00'],
-  ['襄阳市', '50', '700.00'],
+  ['county', '总金额'],
+  ['宜昌市', '150'],
+  ['武汉市', '200'],
+  ['黄石市', '350'],
+  ['荆门市', '400'],
 ];
 
 const formatter = (data) => {
@@ -45,9 +46,7 @@ const option = {
     right: '5%',
     orient: 'vertical',
   },
-  series: ['数据A', '数据B'],
   type: 'scatter',
-  label: '项目数',
 };
 </script>
 
