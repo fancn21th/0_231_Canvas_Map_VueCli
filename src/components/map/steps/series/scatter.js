@@ -4,6 +4,7 @@ import max from 'lodash/max';
 
 const barWidth = 20;
 const scaleX = 0.75;
+const offsetY_base = -10;
 
 const getScale = (array, range = 100) => {
   const maxValue = max(array);
@@ -18,8 +19,6 @@ function getOption({ name, data, index }) {
     }),
     100 + index * 100,
   );
-
-  console.log('scaleY', scaleY);
 
   return {
     type: 'scatter',
@@ -45,7 +44,7 @@ function getOption({ name, data, index }) {
       const data = value[2];
       const [k, v] = Object.entries(data)[0];
       const offsetX = index === 0 ? -barWidth * scaleX : barWidth * scaleX;
-      const offsetY = -((parseInt(v) * scaleY) / 2) - 10;
+      const offsetY = -((parseInt(v) * scaleY) / 2) + offsetY_base;
       return [offsetX, offsetY];
     },
     label: {
